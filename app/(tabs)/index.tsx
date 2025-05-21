@@ -5,7 +5,7 @@ import { View } from "react-native";
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Link href="/notifications">Visit Notifications Screen</Link>
+      <Link style={{color: "white"}} href="/notifications">Visit Notifications Screen</Link>
     </View>
   );
 }
