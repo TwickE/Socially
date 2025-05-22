@@ -66,7 +66,7 @@ export const getFeedPosts = query({
           .first();
 
         return {
-          ...posts,
+          ...post,
           author: {
             _id: postAuthor?._id,
             username: postAuthor?.username,
