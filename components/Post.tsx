@@ -1,12 +1,47 @@
 import { colors } from '@/constants/theme';
+import { api } from '@/convex/_generated/api';
+import { Id } from '@/convex/_generated/dataModel';
 import { styles } from '@/styles/feed.styles';
 import { Ionicons } from '@expo/vector-icons';
+import { useMutation } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
+import { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-//todo: add the actual type
-const Post = ({ post }: { post: any }) => {
+type PostProps = {
+  post: {
+    _id: Id<"posts">;
+    imageUrl: string;
+    caption?: string;
+    likes: number;
+    comments: number;
+    _creationTime: number;
+    isLiked: boolean;
+    isBookmarked: boolean;
+    author: {
+      _id: string;
+      username: string;
+      image: string;
+    }
+  }
+}
+
+const Post = ({ post }: PostProps) => {
+  const [isLiked, setIsLiked] = useState(post.isLiked);
+  const [likesCount, setLikesCount] = useState(post.likes);
+
+  const toggleLike = useMutation(api.posts.toggleLike);
+
+  const handleLike = async () => {
+    try {
+      const newIsLiked = await toggleLike({ postId: post._id });
+      setIsLiked(newIsLiked);
+      setLikesCount((prev) => (newIsLiked ? prev + 1 : prev - 1));
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
+  }
 
   return (
     <View style={styles.post}>
@@ -29,7 +64,7 @@ const Post = ({ post }: { post: any }) => {
           <Ionicons name="ellipsis-horizontal" size={20} color={colors.white} />
         </TouchableOpacity> */}
         <TouchableOpacity>
-          <Ionicons name="trash-outline" size={20} color={colors.primary} />
+          <Ionicons name="trash-outline" size={20} color={colors.red} />
         </TouchableOpacity>
       </View>
       {/* POST IMAGE */}
@@ -43,8 +78,12 @@ const Post = ({ post }: { post: any }) => {
       {/* POST ACTIONS */}
       <View style={styles.postActions}>
         <View style={styles.postActionsLeft}>
-          <TouchableOpacity>
-            <Ionicons name="heart-outline" size={24} color={colors.white} />
+          <TouchableOpacity onPress={handleLike}>
+            <Ionicons
+              name={isLiked ? "heart" : "heart-outline"}
+              size={24}
+              color={isLiked ? colors.red : colors.white}
+            />
           </TouchableOpacity>
           <TouchableOpacity>
             <Ionicons name="chatbubble-outline" size={22} color={colors.white} />
@@ -56,7 +95,9 @@ const Post = ({ post }: { post: any }) => {
       </View>
       {/* POST INFO */}
       <View style={styles.postInfo}>
-        <Text style={styles.likesText}>Be the first to like</Text>
+        <Text style={styles.likesText}>
+          {likesCount > 0 ? `${likesCount.toLocaleString()} likes` : "Be the first to like this"}
+        </Text>
         {post.caption && (
           <View style={styles.captionContainer}>
             <Text style={styles.captionUsername}>{post.author.username}</Text>
