@@ -55,6 +55,9 @@ const CreateScreen = () => {
       const { storageId } = JSON.parse(uploadResult.body);
       await createPost({ storageId, caption });
 
+      setSelectedImage(null);
+      setCaption("");
+
       router.push("/(tabs)");
     } catch (error) {
       console.error("Error sharing post:", error);
