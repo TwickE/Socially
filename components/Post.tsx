@@ -3,8 +3,9 @@ import { colors } from '@/constants/theme';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { styles } from '@/styles/feed.styles';
+import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { useMutation } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { formatDistanceToNow } from 'date-fns';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
@@ -36,8 +37,13 @@ const Post = ({ post }: PostProps) => {
   const [commentsCount, setCommentsCount] = useState(post.comments);
   const [showComments, setShowComments] = useState(false);
 
+  const { user } = useUser();
+
+  const currentUser = useQuery(api.users.getUserByClerkId, user ? { clerkId: user.id } : "skip");
+
   const toggleLike = useMutation(api.posts.toggleLike);
   const toggleBookmark = useMutation(api.bookmarks.toggleBookmark);
+  const deletePost = useMutation(api.posts.deletePost);
 
   const handleLike = async () => {
     try {
@@ -52,6 +58,14 @@ const Post = ({ post }: PostProps) => {
   const handleBookmark = async () => {
     const newIsBookmarked = await toggleBookmark({ postId: post._id });
     setIsBookmarked(newIsBookmarked);
+  }
+
+  const handleDelete = async () => {
+    try {
+      await deletePost({ postId: post._id });
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
   }
 
   return (
@@ -70,13 +84,16 @@ const Post = ({ post }: PostProps) => {
             <Text style={styles.postUsername}>{post.author.username}</Text>
           </TouchableOpacity>
         </Link>
-        {/* SHOW A DELETE BUTTON */}
-        {/* <TouchableOpacity>
-          <Ionicons name="ellipsis-horizontal" size={20} color={colors.white} />
-        </TouchableOpacity> */}
-        <TouchableOpacity>
-          <Ionicons name="trash-outline" size={20} color={colors.red} />
-        </TouchableOpacity>
+        {/* IF OWNER OF POST SHOW A DELETE BUTTON */}
+        {post.author._id === currentUser?._id ? (
+          <TouchableOpacity onPress={handleDelete}>
+            <Ionicons name="trash-outline" size={20} color={colors.red} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity>
+            <Ionicons name="ellipsis-horizontal" size={20} color={colors.white} />
+          </TouchableOpacity>
+        )}
       </View>
       {/* POST IMAGE */}
       <Image
@@ -93,7 +110,7 @@ const Post = ({ post }: PostProps) => {
             <Ionicons
               name={isLiked ? "heart" : "heart-outline"}
               size={24}
-              color={colors.white}
+              color={isLiked ? colors.red : colors.white}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShowComments(true)}>
@@ -104,7 +121,7 @@ const Post = ({ post }: PostProps) => {
           <Ionicons
             name={isBookmarked ? "bookmark" : "bookmark-outline"}
             size={22}
-            color={isBookmarked ? colors.primary : colors.white}
+            color={colors.white}
           />
         </TouchableOpacity>
       </View>
