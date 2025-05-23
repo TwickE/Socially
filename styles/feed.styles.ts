@@ -200,6 +200,7 @@ export const styles = StyleSheet.create({
     color: colors.white,
     paddingVertical: 8,
     paddingHorizontal: 16,
+    maxHeight: 120,
     marginRight: 12,
     backgroundColor: colors.surface,
     borderRadius: 20,
