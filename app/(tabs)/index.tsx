@@ -8,7 +8,7 @@ import { styles } from "@/styles/feed.styles";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   const { signOut } = useAuth();
@@ -32,27 +32,31 @@ export default function Index() {
           <Ionicons name="log-out-outline" size={24} color={colors.white} />
         </TouchableOpacity>
       </View>
-      {/* STORIES */}
-      <ScrollView
+      {/* STORIES & POSTS */}
+      <FlatList
+        data={posts}
+        renderItem={({ item }) => <Post post={item} />}
+        keyExtractor={(item) => item._id.toString()}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 60 }}
-      >
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.storiesContainer}
-        >
-          {stories.map((story) => (
-            <Story key={story.id} story={story} />
-          ))}
-        </ScrollView>
-        {/* POSTS */}
-        {posts.map((post) => (
-          <Post key={post.author._id} post={post} />
-        ))}
-      </ScrollView>
+        ListHeaderComponent={<StoriesSection />}
+      />
     </View>
   );
+}
+
+const StoriesSection = () => {
+  return (
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      style={styles.storiesContainer}
+    >
+      {stories.map((story) => (
+        <Story key={story.id} story={story} />
+      ))}
+    </ScrollView>
+  )
 }
 
 const NoPostsFound = () => (
