@@ -12,8 +12,7 @@ const Notification = ({ notification }: any) => {
   return (
     <View style={styles.notificationItem}>
       <View style={styles.notificationContent}>
-        {/* TODO: change link */}
-        <Link href={`/notifications`} asChild>
+        <Link href={`/user/${notification.sender._id}`} asChild>
           <TouchableOpacity style={styles.avatarContainer}>
             <Image
               source={notification.sender.image}
@@ -33,8 +32,7 @@ const Notification = ({ notification }: any) => {
           </TouchableOpacity>
         </Link>
         <View style={styles.notificationInfo}>
-          {/* TODO: change link */}
-          <Link href={`/notifications`} asChild>
+          <Link href={`/user/${notification.sender._id}`} asChild>
             <TouchableOpacity>
               <Text style={styles.username}>{notification.sender.username}</Text>
             </TouchableOpacity>

@@ -21,7 +21,7 @@ const Profile = () => {
   });
 
   const [selectedPost, setSelectedPost] = useState<Doc<"posts"> | null>(null);
-  const posts = useQuery(api.posts.getPostByUser, {});
+  const posts = useQuery(api.posts.getPostsByUser, {});
 
   const updateProfile = useMutation(api.users.updateProfile);
 

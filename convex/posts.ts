@@ -179,7 +179,7 @@ export const deletePost = mutation({
   }
 });
 
-export const getPostByUser = query({
+export const getPostsByUser = query({
   args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, args) => {
    const user = args.userId ? await ctx.db.get(args.userId) : await getAuthenticatedUser(ctx);
