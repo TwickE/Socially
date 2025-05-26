@@ -4,6 +4,7 @@ import ClerkAndConvexProvider from "@/providers/ClerkAndConvexProvider";
 import { useFonts } from "expo-font";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect } from "react";
 import { Platform } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -40,6 +41,7 @@ export default function RootLayout() {
           <InitialLayout />
         </SafeAreaView>
       </SafeAreaProvider>
+      <StatusBar style="light" />
     </ClerkAndConvexProvider>
   );
 }
