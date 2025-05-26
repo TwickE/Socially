@@ -10,7 +10,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
 
 type PostProps = {
   post: {
@@ -61,11 +61,23 @@ const Post = ({ post }: PostProps) => {
   }
 
   const handleDelete = async () => {
-    try {
-      await deletePost({ postId: post._id });
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    }
+    Alert.alert('Delete Post', 'Are you sure you want to delete this post?\nThis action is permanent', [
+      {
+        text: 'Cancel',
+        style: 'cancel'
+      },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deletePost({ postId: post._id });
+          } catch (error) {
+            console.error("Error deleting post:", error);
+          }
+        }
+      }
+    ]);
   }
 
   return (
