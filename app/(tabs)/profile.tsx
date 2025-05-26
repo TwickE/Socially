@@ -30,6 +30,14 @@ const Profile = () => {
     setIsEditModalVisible(false);
   }
 
+  const handleCloseEditModal = () => {
+    setIsEditModalVisible(false);
+    setEditedProfile({
+      fullname: currentUser?.fullname || '',
+      bio: currentUser?.bio || '',
+    });
+  }
+
   if (!currentUser || posts === undefined) return <Loader />;
 
   return (
@@ -107,7 +115,7 @@ const Profile = () => {
         visible={isEditModalVisible}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setIsEditModalVisible(false)}
+        onRequestClose={handleCloseEditModal}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
@@ -117,7 +125,7 @@ const Profile = () => {
             <View style={styles.modalContent}>
               <View style={styles.modalHeader}>
                 <Text style={styles.modalTitle}>Edit Profile</Text>
-                <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
+                <TouchableOpacity onPress={handleCloseEditModal}>
                   <Ionicons name="close" size={24} color={colors.white} />
                 </TouchableOpacity>
               </View>
