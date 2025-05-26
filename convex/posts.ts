@@ -110,7 +110,7 @@ export const toggleLike = mutation({
       if (currentUser._id !== post.userId) {
         await ctx.db.insert("notifications", {
           receiverId: post.userId,
-          senderId: post.userId,
+          senderId: currentUser._id,
           type: "like",
           postId: args.postId
         });
@@ -159,6 +159,15 @@ export const deletePost = mutation({
 
     for (const bookmark of bookmarks) {
       await ctx.db.delete(bookmark._id);
+    }
+
+    const notifications = await ctx.db
+      .query("notifications")
+      .withIndex("by_post", (q) => q.eq("postId", args.postId))
+      .collect();
+    
+    for (const notification of notifications) {
+      await ctx.db.delete(notification._id);
     }
 
     await ctx.storage.delete(post.storageId);
