@@ -68,10 +68,8 @@ const NoPostsFound = () => (
     justifyContent: "center",
     alignItems: "center",
   }}>
-    <Text style={{
-      fontSize: 20,
-      color: colors.primary
-    }}>No posts yet</Text>
+    <Ionicons name="images-outline" size={50} color={colors.primary} />
+    <Text style={{ fontSize: 20, color: colors.white }}>No posts yet</Text>
   </View>
 );
 

@@ -2,6 +2,7 @@ import Loader from '@/components/Loader';
 import { colors } from '@/constants/theme';
 import { api } from '@/convex/_generated/api';
 import { styles } from '@/styles/bookmarks.styles';
+import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { FlatList, Text, View } from 'react-native';
@@ -54,7 +55,8 @@ function NoBookmarksFound() {
         backgroundColor: colors.background
       }}
     >
-      <Text style={{ color: colors.primary, fontSize: 22 }}>No bookmarked posts yet</Text>
+      <Ionicons name="bookmark-outline" size={50} color={colors.primary} />
+      <Text style={{ fontSize: 20, color: colors.white }}>No bookmarked posts yet</Text>
     </View>
   )
 }
