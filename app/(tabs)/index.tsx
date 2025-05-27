@@ -7,6 +7,7 @@ import { colors } from "@/styles/theme";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
+import { Link } from "expo-router";
 import { useState } from "react";
 import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 
@@ -37,9 +38,16 @@ export default function Index() {
       {/* HEADER */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Socially</Text>
-        <TouchableOpacity onPress={() => signOut()}>
-          <Ionicons name="log-out-outline" size={24} color={colors.white} />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
+          <Link href="/notifications" asChild>
+            <TouchableOpacity >
+              <Ionicons name="notifications-outline" size={24} color={colors.white} />
+            </TouchableOpacity>
+          </Link>
+          <TouchableOpacity onPress={() => signOut()}>
+            <Ionicons name="log-out-outline" size={24} color={colors.white} />
+          </TouchableOpacity>
+        </View>
       </View>
       {/* STORIES & POSTS */}
       <FlatList
