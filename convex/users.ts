@@ -34,7 +34,7 @@ export const createUser = mutation({
   }
 });
 
-export async function getAuthenticatedUser(ctx:QueryCtx | MutationCtx) {
+export async function getAuthenticatedUser(ctx: QueryCtx | MutationCtx) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
     throw new Error("User not authenticated");
@@ -54,9 +54,9 @@ export const getUserByClerkId = query({
   args: { clerkId: v.string() },
   handler: async (ctx, args) => {
     const user = await ctx.db
-    .query("users")
-    .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
-    .unique();
+      .query("users")
+      .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
+      .unique();
 
     if (!user) {
       throw new Error("User not found");
@@ -94,12 +94,12 @@ export const getUserProfile = query({
 });
 
 export const isFollowing = query({
-  args: {followingId: v.id("users")},
+  args: { followingId: v.id("users") },
   handler: async (ctx, args) => {
     const currentUser = await getAuthenticatedUser(ctx);
 
     const follow = await ctx.db
-    .query("follows")
+      .query("follows")
       .withIndex("by_both", (q) =>
         q.eq("followerId", currentUser._id).eq("followingId", args.followingId))
       .first();
@@ -146,7 +146,7 @@ async function updateFollowCounts(
   const follower = await ctx.db.get(followerId);
   const following = await ctx.db.get(followingId);
 
-  if(follower && following) {
+  if (follower && following) {
     await ctx.db.patch(followerId, {
       following: follower.following + (isFollow ? 1 : -1)
     });
@@ -155,3 +155,21 @@ async function updateFollowCounts(
     });
   }
 }
+
+export const searchUsersByUsername = query({
+  args: { searchQuery: v.string() },
+  handler: async (ctx, args) => {
+    if (!args.searchQuery || args.searchQuery.trim() === "") {
+      return [];
+    }
+
+    const users = await ctx.db
+      .query("users")
+      .withSearchIndex("search_username", (q) =>
+        q.search("username", args.searchQuery)
+      )
+      .collect();
+
+    return users;
+  },
+});

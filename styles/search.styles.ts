@@ -42,5 +42,38 @@ export const styles = StyleSheet.create({
   },
   hidden: {
     display: "none",
-  }
+  },
+  infoText: {
+    color: colors.grey,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    fontSize: 16,
+  },
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    gap: 8,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.surface,
+  },
+  containerText: {
+    flexDirection: "column",
+    gap: 2,
+  },
+  username: {
+    color: colors.white,
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  fullname: {
+    color: colors.grey,
+    fontSize: 14,
+  },
 });

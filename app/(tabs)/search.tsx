@@ -1,13 +1,63 @@
+import Loader from '@/components/Loader';
+import { api } from '@/convex/_generated/api';
+import { Doc } from '@/convex/_generated/dataModel';
 import { styles } from '@/styles/search.styles';
 import { colors } from '@/styles/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useQuery } from 'convex/react';
+import { Image } from 'expo-image';
+import { Link, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { FlatList, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const Search = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
+
+  const searchResults = useQuery(
+    api.users.searchUsersByUsername,
+    debouncedSearchTerm.length >= 2 ? { searchQuery: debouncedSearchTerm } : "skip"
+  );
+
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    setDebouncedSearchTerm("");
+  }
+
+  const renderResults = () => {
+    if (searchResults === undefined && debouncedSearchTerm.length >= 2) {
+      return <Loader />;
+    }
+
+    if (searchResults && searchResults.length === 0 && debouncedSearchTerm.length >= 2) {
+      return <Text style={styles.infoText}>{`No users found for: ${debouncedSearchTerm}`}</Text>;
+    }
+
+    if (searchResults && searchResults.length > 0) {
+      return (
+        <FlatList
+          data={searchResults}
+          renderItem={({ item }) => <UserListItem user={item} />}
+          keyExtractor={(item) => item._id.toString()}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        />
+      );
+    }
+
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -21,7 +71,7 @@ const Search = () => {
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{}}
+        style={{ flex: 1 }}
       >
         {/* SEARCH BAR */}
         <View style={styles.searchInput}>
@@ -32,21 +82,36 @@ const Search = () => {
             value={searchTerm}
             onChangeText={setSearchTerm}
           />
-          <TouchableOpacity style={searchTerm === "" ? styles.hidden : ""} onPress={() => setSearchTerm("")}>
+          <TouchableOpacity style={searchTerm === "" ? styles.hidden : ""} onPress={handleClearSearch}>
             <Ionicons name='close-circle-outline' size={24} color={colors.white} />
           </TouchableOpacity>
         </View>
-
+        {/* SEARCH RESULTS */}
+        <View style={{ flex: 1 }}>
+          {renderResults()}
+        </View>
       </KeyboardAvoidingView>
-      {/* <FlatList
-        data={notifications}
-        renderItem={({ item }) => <Notification notification={item} />}
-        keyExtractor={(item) => item._id.toString()}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
-      /> */}
     </View>
   )
 }
 
 export default Search
+
+function UserListItem({ user }: { user: Doc<"users">; }) {
+  return (
+    <Link href={`/user/${user._id}`} asChild>
+      <TouchableOpacity style={styles.itemContainer}>
+        <Image
+          source={{ uri: user.image }}
+          style={styles.avatar}
+          contentFit="cover"
+          transition={200}
+        />
+        <View style={styles.containerText}>
+          <Text style={styles.username}>{user.username}</Text>
+          <Text style={styles.fullname}>{user.fullname}</Text>
+        </View>
+      </TouchableOpacity>
+    </Link>
+  )
+}
