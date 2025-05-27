@@ -7,6 +7,7 @@ import { useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { FlatList, Keyboard, KeyboardAvoidingView, Modal, Platform, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
@@ -14,6 +15,7 @@ const Profile = () => {
   const { signOut, userId } = useAuth();
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
+  const router = useRouter();
 
   const [editedProfile, setEditedProfile] = useState({
     fullname: currentUser?.fullname || '',
@@ -44,18 +46,17 @@ const Profile = () => {
     <View style={styles.container}>
       {/* HEADER */}
       <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Text style={styles.username}>{currentUser.username}</Text>
-        </View>
-        <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.headerIcon} onPress={() => signOut()}>
-            <Ionicons name="log-out-outline" size={24} color={colors.white} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color={colors.white} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>{currentUser.username}</Text>
+        <TouchableOpacity style={styles.headerIcon} onPress={() => signOut()}>
+          <Ionicons name="log-out-outline" size={24} color={colors.white} />
+        </TouchableOpacity>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.profileInfo}>
-          {/* AVATAR AND STATS */}
+          {/* AVATAR */}
           <View style={styles.avatarAndStats}>
             <View style={styles.avatarContainer}>
               <Image
@@ -65,6 +66,7 @@ const Profile = () => {
                 transition={200}
               />
             </View>
+            {/* STATS */}
             <View style={styles.statsContainer}>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{currentUser.posts}</Text>
@@ -80,8 +82,10 @@ const Profile = () => {
               </View>
             </View>
           </View>
+          {/* NAME AND BIO */}
           <Text style={styles.name}>{currentUser.fullname}</Text>
           {currentUser.bio && <Text style={styles.bio}>{currentUser.bio}</Text>}
+          {/* EDIT PROFILE BUTTON */}
           <View style={styles.actionButtons}>
             <TouchableOpacity style={styles.editButton} onPress={() => setIsEditModalVisible(true)}>
               <Text style={styles.editButtonText}>Edit Profile</Text>
@@ -156,7 +160,7 @@ const Profile = () => {
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </Modal>
-
+      
       {/* SELECTED IMAGE MODAL */}
       <Modal
         visible={!!selectedPost}

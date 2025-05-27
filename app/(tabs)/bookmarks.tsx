@@ -5,10 +5,12 @@ import { styles } from '@/styles/bookmarks.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
-import { FlatList, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 const Bookmarks = () => {
   const bookmarkedPosts = useQuery(api.bookmarks.getBookmarkedPosts);
+  const router = useRouter();
 
   if (bookmarkedPosts === undefined) return <Loader />;
 
@@ -16,8 +18,13 @@ const Bookmarks = () => {
 
   return (
     <View style={styles.container}>
+      {/* HEADER */}
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color={colors.white} />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Bookmarks</Text>
+        <View style={{ width: 24 }} />
       </View>
       {/* POSTS */}
       <FlatList
@@ -25,18 +32,17 @@ const Bookmarks = () => {
         keyExtractor={(item) => item!._id.toString()}
         renderItem={({ item }) =>
           item ? (
-          <View style={styles.containerItem}>
-            <Image
+            <View style={styles.containerItem}>
+              <Image
                 source={{ uri: item.imageUrl }}
                 style={styles.image}
                 contentFit="cover"
                 transition={200}
                 cachePolicy="memory-disk"
               />
-          </View>
-        ): null}
+            </View>
+          ) : null}
         numColumns={3}
-        columnWrapperStyle={styles.postsContainer}
         showsVerticalScrollIndicator={false}
       />
     </View>

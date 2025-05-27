@@ -20,7 +20,7 @@ const UserProfileScreen = () => {
   const toggleFollow = useMutation(api.users.toggleFollow);
 
   const handleBack = () => {
-    if(router.canGoBack()) {
+    if (router.canGoBack()) {
       router.back();
     } else {
       router.replace('/(tabs)');
@@ -43,14 +43,14 @@ const UserProfileScreen = () => {
         <View style={styles.profileInfo}>
           {/* AVATAR */}
           <View style={styles.avatarAndStats}>
-              <Image
-                source={profile.image}
-                style={styles.avatar}
-                contentFit="cover"
-                transition={200}
-                cachePolicy='memory-disk'
-              />
-              {/* STATS */}
+            <Image
+              source={profile.image}
+              style={styles.avatar}
+              contentFit="cover"
+              transition={200}
+              cachePolicy='memory-disk'
+            />
+            {/* STATS */}
             <View style={styles.statsContainer}>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.posts}</Text>
@@ -71,8 +71,8 @@ const UserProfileScreen = () => {
           {profile.bio && <Text style={styles.bio}>{profile.bio}</Text>}
           {/* FOLLOW BUTTON */}
           <Pressable
-          style={[styles.followButton, isFollowing && styles.followingButton]}
-          onPress={() => toggleFollow({ followingId: id as Id<"users">})}
+            style={[styles.followButton, isFollowing && styles.followingButton]}
+            onPress={() => toggleFollow({ followingId: id as Id<"users"> })}
           >
             <Text style={[styles.followButtonText, isFollowing && styles.followingButtonText]}>
               {isFollowing ? 'Following' : 'Follow'}

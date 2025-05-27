@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderBottomColor: colors.surface,
   },
   headerTitle: {
@@ -29,9 +29,6 @@ export const styles = StyleSheet.create({
     opacity: 0.7,
   },
   shareButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    minWidth: 60,
     alignItems: "center",
     justifyContent: "center",
   },

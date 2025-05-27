@@ -7,15 +7,18 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderBottomColor: colors.surface,
   },
   headerTitle: {
-    fontSize: 24,
-    fontFamily: "JetBrainsMono-Medium",
-    color: colors.primary,
+    fontSize: 18,
+    fontWeight: "600",
+    color: colors.white,
   },
   listContainer: {
     padding: 16,

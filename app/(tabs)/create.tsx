@@ -36,7 +36,7 @@ const CreateScreen = () => {
   const createPost = useMutation(api.posts.createPost);
 
   const handleShare = async () => {
-    if(!selectedImage) return;
+    if (!selectedImage) return;
 
     try {
       setIsSharing(true);
@@ -48,7 +48,7 @@ const CreateScreen = () => {
         mimeType: "image/jpeg",
       });
 
-      if(uploadResult.status !== 200) {
+      if (uploadResult.status !== 200) {
         throw new Error("Failed to upload image");
       }
 
@@ -69,13 +69,15 @@ const CreateScreen = () => {
   if (!selectedImage) {
     return (
       <View style={styles.container}>
+        {/* HEADER */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={28} color={colors.primary} />
+            <Ionicons name="arrow-back" size={24} color={colors.white} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>New Post</Text>
-          <View style={{ width: 28 }} />
+          <View style={{ width: 24 }} />
         </View>
+        {/* EMPTY IMAGE SELECTOR */}
         <TouchableOpacity style={styles.emptyImageContainer} onPress={pickImage}>
           <Ionicons name="image-outline" size={48} color={colors.grey} />
           <Text style={styles.emptyImageText}>Tap to select an image</Text>
@@ -91,6 +93,7 @@ const CreateScreen = () => {
       keyboardVerticalOffset={Platform.OS === "ios" ? 40 : 0}
     >
       <View style={styles.contentContainer}>
+        {/* HEADER */}
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
@@ -99,7 +102,7 @@ const CreateScreen = () => {
             }}
             disabled={isSharing}
           >
-            <Ionicons name="close-outline" size={28} color={isSharing ? colors.grey : colors.white} />
+            <Ionicons name="close-outline" size={24} color={isSharing ? colors.grey : colors.white} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>New Post</Text>
           <TouchableOpacity
@@ -114,6 +117,7 @@ const CreateScreen = () => {
             )}
           </TouchableOpacity>
         </View>
+        {/* CREATE POST */}
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           bounces={false}

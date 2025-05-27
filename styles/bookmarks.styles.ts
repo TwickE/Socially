@@ -18,21 +18,16 @@ export const styles = StyleSheet.create({
     borderBottomColor: colors.surface,
   },
   headerTitle: {
-    fontSize: 24,
-    fontFamily: "JetBrainsMono-Medium",
-    color: colors.primary,
-  },
-  postsContainer: {
-    justifyContent: "flex-start",
-    gap: 1,
-    paddingHorizontal: 8,
-    marginBottom: 1,
+    fontSize: 18,
+    fontWeight: "600",
+    color: colors.white,
   },
   containerItem: {
-    width: width / 3,
+    flex: 1 / 3,
+    aspectRatio: 1,
+    padding: 1,
   },
   image: {
-    width: width / 3,
-    aspectRatio: 1,
+    flex: 1,
   }
 });

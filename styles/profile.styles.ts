@@ -14,21 +14,8 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderBottomColor: colors.surface,
-  },
-  headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  username: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: colors.white,
-  },
-  headerRight: {
-    flexDirection: "row",
-    gap: 16,
   },
   headerIcon: {
     padding: 4,
