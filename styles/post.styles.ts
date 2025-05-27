@@ -20,12 +20,4 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     color: colors.white,
   },
-  containerItem: {
-    flex: 1 / 3,
-    aspectRatio: 1,
-    padding: 1,
-  },
-  image: {
-    flex: 1,
-  }
 });

@@ -5,7 +5,7 @@ import { styles } from '@/styles/bookmarks.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 const Bookmarks = () => {
@@ -27,20 +27,23 @@ const Bookmarks = () => {
         <View style={{ width: 24 }} />
       </View>
       {/* POSTS */}
+      {/* `/post/${item._id.toString()}` */}
       <FlatList
         data={bookmarkedPosts}
         keyExtractor={(item) => item!._id.toString()}
         renderItem={({ item }) =>
           item ? (
-            <View style={styles.containerItem}>
-              <Image
-                source={{ uri: item.imageUrl }}
-                style={styles.image}
-                contentFit="cover"
-                transition={200}
-                cachePolicy="memory-disk"
-              />
-            </View>
+            <Link href={{ pathname: "/post/[id]", params: { id: item._id.toString() } }} asChild>
+              <TouchableOpacity style={styles.containerItem}>
+                <Image
+                  source={{ uri: item.imageUrl }}
+                  style={styles.image}
+                  contentFit="cover"
+                  transition={200}
+                  cachePolicy="memory-disk"
+                />
+              </TouchableOpacity>
+            </Link>
           ) : null}
         numColumns={3}
         showsVerticalScrollIndicator={false}

@@ -165,7 +165,7 @@ export const deletePost = mutation({
       .query("notifications")
       .withIndex("by_post", (q) => q.eq("postId", args.postId))
       .collect();
-    
+
     for (const notification of notifications) {
       await ctx.db.delete(notification._id);
     }
@@ -182,17 +182,54 @@ export const deletePost = mutation({
 export const getPostsByUser = query({
   args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, args) => {
-   const user = args.userId ? await ctx.db.get(args.userId) : await getAuthenticatedUser(ctx);
+    const user = args.userId ? await ctx.db.get(args.userId) : await getAuthenticatedUser(ctx);
 
-    if(!user) {
+    if (!user) {
       throw new Error("User not found");
     }
 
     const posts = await ctx.db
-    .query("posts")
-    .withIndex("by_user", (q) => q.eq("userId", args.userId || user._id))
-    .collect();
+      .query("posts")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId || user._id))
+      .collect();
 
     return posts;
+  }
+});
+
+export const getPostById = query({
+  args: { postId: v.id("posts") },
+  handler: async (ctx, args) => {
+    const currentUser = await getAuthenticatedUser(ctx);
+    const post = await ctx.db.get(args.postId);
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    const postAuthor = await ctx.db.get(post.userId);
+    if (!postAuthor) {
+      throw new Error("Post author not found");
+    }
+
+    const like = await ctx.db.query("likes")
+      .withIndex("by_user_and_post", (q) =>
+        q.eq("userId", currentUser._id).eq("postId", post._id))
+      .first();
+
+    const bookmark = await ctx.db.query("bookmarks")
+      .withIndex("by_user_and_post", (q) =>
+        q.eq("userId", currentUser._id).eq("postId", post._id))
+      .first();
+
+    return {
+      ...post,
+      author: {
+        _id: postAuthor._id,
+        username: postAuthor.username,
+        image: postAuthor.image
+      },
+      isLiked: !!like,
+      isBookmarked: !!bookmark
+    };
   }
 });

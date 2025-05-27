@@ -1,13 +1,12 @@
 import Loader from '@/components/Loader';
 import { colors } from '@/constants/theme';
 import { api } from '@/convex/_generated/api';
-import { Doc } from '@/convex/_generated/dataModel';
 import { styles } from '@/styles/profile.styles';
 import { useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { FlatList, Keyboard, KeyboardAvoidingView, Modal, Platform, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
@@ -22,7 +21,6 @@ const Profile = () => {
     bio: currentUser?.bio || '',
   });
 
-  const [selectedPost, setSelectedPost] = useState<Doc<"posts"> | null>(null);
   const posts = useQuery(api.posts.getPostsByUser, {});
 
   const updateProfile = useMutation(api.users.updateProfile);
@@ -102,14 +100,16 @@ const Profile = () => {
           numColumns={3}
           scrollEnabled={false}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.gridItem} onPress={() => setSelectedPost(item)}>
-              <Image
-                source={item.imageUrl}
-                style={styles.gridImage}
-                contentFit="cover"
-                transition={200}
-              />
-            </TouchableOpacity>
+            <Link href={{ pathname: "/post/[id]", params: { id: item._id.toString() } }} asChild>
+              <TouchableOpacity style={styles.gridItem}>
+                <Image
+                  source={item.imageUrl}
+                  style={styles.gridImage}
+                  contentFit="cover"
+                  transition={200}
+                />
+              </TouchableOpacity>
+            </Link>
           )}
         />
       </ScrollView>
@@ -159,32 +159,6 @@ const Profile = () => {
             </View>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
-      </Modal>
-      
-      {/* SELECTED IMAGE MODAL */}
-      <Modal
-        visible={!!selectedPost}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setSelectedPost(null)}
-      >
-        <View style={styles.modalBackdrop}>
-          {selectedPost && (
-            <View style={styles.postDetailContainer}>
-              <View style={styles.postDetailHeader}>
-                <TouchableOpacity onPress={() => setSelectedPost(null)}>
-                  <Ionicons name="close" size={24} color={colors.white} />
-                </TouchableOpacity>
-              </View>
-              <Image
-                source={selectedPost.imageUrl}
-                style={styles.postDetailImage}
-                transition={200}
-                cachePolicy={"memory-disk"}
-              />
-            </View>
-          )}
-        </View>
       </Modal>
     </View>
   )
