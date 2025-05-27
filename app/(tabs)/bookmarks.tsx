@@ -12,10 +12,6 @@ const Bookmarks = () => {
   const bookmarkedPosts = useQuery(api.bookmarks.getBookmarkedPosts);
   const router = useRouter();
 
-  if (bookmarkedPosts === undefined) return <Loader />;
-
-  if (bookmarkedPosts.length === 0) return <NoBookmarksFound />;
-
   return (
     <View style={styles.container}>
       {/* HEADER */}
@@ -26,28 +22,33 @@ const Bookmarks = () => {
         <Text style={styles.headerTitle}>Bookmarks</Text>
         <View style={{ width: 24 }} />
       </View>
-      {/* POSTS */}
-      {/* `/post/${item._id.toString()}` */}
-      <FlatList
-        data={bookmarkedPosts}
-        keyExtractor={(item) => item!._id.toString()}
-        renderItem={({ item }) =>
-          item ? (
-            <Link href={{ pathname: "/post/[id]", params: { id: item._id.toString() } }} asChild>
-              <TouchableOpacity style={styles.containerItem}>
-                <Image
-                  source={{ uri: item.imageUrl }}
-                  style={styles.image}
-                  contentFit="cover"
-                  transition={200}
-                  cachePolicy="memory-disk"
-                />
-              </TouchableOpacity>
-            </Link>
-          ) : null}
-        numColumns={3}
-        showsVerticalScrollIndicator={false}
-      />
+      {/* BOOKMARKS */}
+      {bookmarkedPosts === undefined ? (
+        <Loader />
+      ) : bookmarkedPosts.length === 0 ? (
+        <NoBookmarksFound />
+      ) : (
+        <FlatList
+          data={bookmarkedPosts}
+          keyExtractor={(item) => item!._id.toString()}
+          renderItem={({ item }) =>
+            item ? (
+              <Link href={{ pathname: "/post/[id]", params: { id: item._id.toString() } }} asChild>
+                <TouchableOpacity style={styles.containerItem}>
+                  <Image
+                    source={{ uri: item.imageUrl }}
+                    style={styles.image}
+                    contentFit="cover"
+                    transition={200}
+                    cachePolicy="memory-disk"
+                  />
+                </TouchableOpacity>
+              </Link>
+            ) : null}
+          numColumns={3}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   )
 }

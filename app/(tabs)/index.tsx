@@ -17,14 +17,6 @@ export default function Index() {
 
   const posts = useQuery(api.posts.getFeedPosts);
 
-  if (posts === undefined) {
-    return <Loader />
-  }
-
-  if (posts.length === 0) {
-    return <NoPostsFound />
-  }
-
   // TODO: Implement pull to refresh
   const onRefresh = () => {
     setRefreshing(true);
@@ -50,21 +42,27 @@ export default function Index() {
         </View>
       </View>
       {/* STORIES & POSTS */}
-      <FlatList
-        data={posts}
-        renderItem={({ item }) => <Post post={item} />}
-        keyExtractor={(item) => item._id.toString()}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 60 }}
-        ListHeaderComponent={<StoriesSection />}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={colors.primary}
-          />
-        }
-      />
+      {posts === undefined ? (
+        <Loader />
+      ) : posts.length === 0 ? (
+        <NoPostsFound />
+      ) : (
+        <FlatList
+          data={posts}
+          renderItem={({ item }) => <Post post={item} />}
+          keyExtractor={(item) => item._id.toString()}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 60 }}
+          ListHeaderComponent={<StoriesSection />}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={colors.primary}
+            />
+          }
+        />
+      )}
     </View>
   );
 }

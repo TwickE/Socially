@@ -38,7 +38,24 @@ const Profile = () => {
     });
   }
 
-  if (!currentUser || posts === undefined) return <Loader />;
+  if (!currentUser || posts === undefined) {
+    return (
+      <View style={styles.container}>
+        {/* HEADER */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color={colors.white} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Profile</Text>
+          <TouchableOpacity style={styles.headerIcon} onPress={() => signOut()}>
+            <Ionicons name="log-out-outline" size={24} color={colors.white} />
+          </TouchableOpacity>
+        </View>
+        {/* LOADER */}
+        <Loader />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
