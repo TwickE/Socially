@@ -1,9 +1,9 @@
 import Loader from "@/components/Loader";
 import Post from "@/components/Post";
 import StoriesSection from "@/components/Stories";
-import { colors } from "@/constants/theme";
 import { api } from "@/convex/_generated/api";
 import { styles } from "@/styles/feed.styles";
+import { colors } from "@/styles/theme";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";

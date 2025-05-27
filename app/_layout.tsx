@@ -1,6 +1,6 @@
 import InitialLayout from "@/components/initialLayout";
-import { colors } from "@/constants/theme";
 import ClerkAndConvexProvider from "@/providers/ClerkAndConvexProvider";
+import { colors } from "@/styles/theme";
 import { useFonts } from "expo-font";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SplashScreen from "expo-splash-screen";

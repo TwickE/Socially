@@ -1,6 +1,6 @@
-import { colors } from '@/constants/theme';
 import { api } from '@/convex/_generated/api';
 import { styles } from '@/styles/create.styles';
+import { colors } from '@/styles/theme';
 import { useUser } from '@clerk/clerk-react';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation } from 'convex/react';

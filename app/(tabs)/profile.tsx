@@ -1,7 +1,7 @@
 import Loader from '@/components/Loader';
-import { colors } from '@/constants/theme';
 import { api } from '@/convex/_generated/api';
 import { styles } from '@/styles/profile.styles';
+import { colors } from '@/styles/theme';
 import { useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';

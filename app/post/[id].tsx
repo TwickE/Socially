@@ -1,9 +1,9 @@
 import Loader from '@/components/Loader';
 import Post from '@/components/Post';
-import { colors } from '@/constants/theme';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { styles } from '@/styles/post.styles';
+import { colors } from '@/styles/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { useLocalSearchParams, useRouter } from 'expo-router';

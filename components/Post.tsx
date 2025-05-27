@@ -1,8 +1,8 @@
 import CommentsModal from '@/components/CommentsModal';
-import { colors } from '@/constants/theme';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { styles } from '@/styles/feed.styles';
+import { colors } from '@/styles/theme';
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';

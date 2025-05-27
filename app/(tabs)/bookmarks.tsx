@@ -1,7 +1,7 @@
 import Loader from '@/components/Loader';
-import { colors } from '@/constants/theme';
 import { api } from '@/convex/_generated/api';
 import { styles } from '@/styles/bookmarks.styles';
+import { colors } from '@/styles/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';

@@ -1,5 +1,5 @@
-import { colors } from '@/constants/theme';
 import { styles } from '@/styles/notifications.styles';
+import { colors } from '@/styles/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { formatDistanceToNow } from 'date-fns';
 import { Image } from 'expo-image';

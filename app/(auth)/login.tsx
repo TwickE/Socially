@@ -1,5 +1,5 @@
-import { colors } from '@/constants/theme';
 import { styles } from '@/styles/auth.styles';
+import { colors } from '@/styles/theme';
 import { useSSO } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';

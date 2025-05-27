@@ -1,4 +1,4 @@
-import { colors } from '@/constants/theme';
+import { colors } from '@/styles/theme';
 import { ActivityIndicator, View } from 'react-native';
 
 const Loader = () => {
