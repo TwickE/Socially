@@ -6,7 +6,7 @@ import { colors } from '@/styles/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { FlatList, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 const UserProfileScreen = () => {
@@ -27,7 +27,22 @@ const UserProfileScreen = () => {
     }
   }
 
-  if (profile === undefined || posts === undefined || isFollowing === undefined) return <Loader />;
+  if (profile === undefined || posts === undefined || isFollowing === undefined) {
+    return (
+      <View style={styles.container}>
+        {/* HEADER */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleBack}>
+            <Ionicons name="arrow-back" size={24} color={colors.white} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>User Profile</Text>
+          <View style={{ width: 24 }} />
+        </View>
+        {/* LOADER */}
+        <Loader />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -93,15 +108,17 @@ const UserProfileScreen = () => {
               numColumns={3}
               scrollEnabled={false}
               renderItem={({ item }) => (
-                <TouchableOpacity style={styles.gridItem}>
-                  <Image
-                    source={item.imageUrl}
-                    style={styles.gridImage}
-                    contentFit="cover"
-                    transition={200}
-                    cachePolicy='memory-disk'
-                  />
-                </TouchableOpacity>
+                <Link href={{ pathname: "/post/[id]", params: { id: item._id.toString() } }} asChild>
+                  <TouchableOpacity style={styles.gridItem}>
+                    <Image
+                      source={item.imageUrl}
+                      style={styles.gridImage}
+                      contentFit="cover"
+                      transition={200}
+                      cachePolicy='memory-disk'
+                    />
+                  </TouchableOpacity>
+                </Link>
               )}
             />
           )}

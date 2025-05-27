@@ -23,8 +23,6 @@ const PostDetails = () => {
     }
   }
 
-  if (post === undefined) return <Loader />;
-
   return (
     <View style={styles.container}>
       {/* HEADER */}
@@ -36,7 +34,11 @@ const PostDetails = () => {
         <View style={{ width: 24 }} />
       </View>
       {/* POST CONTENT */}
-      <Post post={post} />
+      {post === undefined ? (
+        <Loader />
+      ) : (
+        <Post post={post} />
+      )}
     </View>
   )
 }

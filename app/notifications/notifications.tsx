@@ -12,10 +12,6 @@ const Notifications = () => {
   const notifications = useQuery(api.notifications.getNotifications);
   const router = useRouter();
 
-  if (notifications === undefined) return <Loader />
-
-  if (notifications.length === 0) return <NoNotifications />;
-
   return (
     <View style={styles.container}>
       {/* HEADER */}
@@ -27,13 +23,20 @@ const Notifications = () => {
         <View style={{ width: 24 }} />
       </View>
       {/* NOTIFICATIONS LIST */}
-      <FlatList
-        data={notifications}
-        renderItem={({ item }) => <Notification notification={item} />}
-        keyExtractor={(item) => item._id.toString()}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
-      />
+      {notifications === undefined ? (
+        <Loader />
+      ) : notifications.length > 0 ? (
+        <FlatList
+          data={notifications}
+          renderItem={({ item }) => <Notification notification={item} />}
+          keyExtractor={(item) => item._id.toString()}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+        />
+      ) : (
+        <NoNotifications />
+      )}
+
     </View>
   )
 }
