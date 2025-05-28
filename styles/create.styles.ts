@@ -47,11 +47,10 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    gap: 12,
   },
   emptyImageText: {
-    color: colors.grey,
-    fontSize: 16,
+    color: colors.white,
+    fontSize: 20,
   },
   content: {
     flex: 1,

@@ -65,7 +65,7 @@ function NoBookmarksFound() {
         backgroundColor: colors.background
       }}
     >
-      <Ionicons name="bookmark-outline" size={50} color={colors.primary} />
+      <Ionicons name="bookmark-outline" size={48} color={colors.primary} />
       <Text style={{ fontSize: 20, color: colors.white }}>No bookmarked posts yet</Text>
     </View>
   )

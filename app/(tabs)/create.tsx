@@ -79,7 +79,7 @@ const CreateScreen = () => {
         </View>
         {/* EMPTY IMAGE SELECTOR */}
         <TouchableOpacity style={styles.emptyImageContainer} onPress={pickImage}>
-          <Ionicons name="image-outline" size={48} color={colors.grey} />
+          <Ionicons name="image-outline" size={48} color={colors.primary} />
           <Text style={styles.emptyImageText}>Tap to select an image</Text>
         </TouchableOpacity>
       </View>

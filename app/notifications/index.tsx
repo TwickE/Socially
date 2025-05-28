@@ -46,7 +46,7 @@ export default Notifications
 function NoNotifications() {
   return (
     <View style={[styles.container, styles.centered]}>
-      <Ionicons name="notifications-outline" size={50} color={colors.primary} />
+      <Ionicons name="notifications-outline" size={48} color={colors.primary} />
       <Text style={{ fontSize: 20, color: colors.white }}>No notifications yet</Text>
     </View>
   )
