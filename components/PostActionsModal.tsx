@@ -68,7 +68,7 @@ const PostActionsModal = ({
                 size={28}
                 color={colors.white}
               />
-              <Text style={styles.postModalText}>Bookmark Post</Text>
+              <Text style={styles.postModalText}>{isBookmarked ? "Remove Bookmark" : "Bookmark Post"}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={onToggleLike} style={styles.postModalAction}>
               <Ionicons
@@ -76,7 +76,7 @@ const PostActionsModal = ({
                 size={28}
                 color={isLiked ? colors.red : colors.white}
               />
-              <Text style={styles.postModalText}>Like Post</Text>
+              <Text style={styles.postModalText}>{isLiked ? "Unlike Post" : "Like Post"}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={onViewComments} style={styles.postModalAction}>
               <Ionicons name="chatbubble-outline" size={28} color={colors.white} />
