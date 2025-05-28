@@ -218,4 +218,43 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  postModalContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  postModalContent: {
+    backgroundColor: colors.background,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    minHeight: 400,
+  },
+  postModalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  postModalTitle: {
+    color: colors.white,
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  postModalActions: {
+    flexDirection: "column",
+    gap: 16,
+  },
+  postModalAction: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  postModalText: {
+    color: colors.white,
+    fontSize: 16,
+  },
+  postModalDeleteText: {
+    color: colors.red,
+    fontSize: 16,
+  },
 });

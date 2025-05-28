@@ -1,0 +1,98 @@
+import { useModalOverlay } from '@/context/ModalOverlayContext';
+import { styles } from '@/styles/feed.styles';
+import { colors } from '@/styles/theme';
+import { Ionicons } from '@expo/vector-icons';
+import { useEffect } from 'react';
+import { Modal, Text, TouchableOpacity, View } from 'react-native';
+
+type PostActionsModalProps = {
+  visible: boolean
+  onClose: () => void;
+  isLiked: boolean;
+  onToggleLike: () => void;
+  isBookmarked: boolean;
+  onToggleBookmark: () => void;
+  onViewComments: () => void;
+  onDeletePost: () => void | undefined;
+  isOwner: boolean;
+}
+
+const PostActionsModal = ({
+  visible,
+  onClose,
+  isLiked,
+  onToggleLike,
+  isBookmarked,
+  onToggleBookmark,
+  onViewComments,
+  onDeletePost,
+  isOwner
+}: PostActionsModalProps) => {
+  const { requestShowOverlay, requestHideOverlay } = useModalOverlay();
+
+  useEffect(() => {
+    if (visible) {
+      requestShowOverlay();
+    } else {
+      requestHideOverlay();
+    }
+
+    return () => {
+      if (visible) {
+        requestHideOverlay();
+      }
+    }
+  }, [visible, requestShowOverlay, requestHideOverlay]);
+
+  return (
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={onClose}
+    >
+      <View style={styles.postModalContainer}>
+        <View style={styles.postModalContent}>
+          {/* HEADER */}
+          <View style={styles.postModalHeader}>
+            <Text style={styles.postModalTitle}>Post Actions</Text>
+            <TouchableOpacity onPress={onClose}>
+              <Ionicons name="close" size={32} color={colors.white} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.postModalActions}>
+            {/* Actions */}
+            <TouchableOpacity onPress={onToggleBookmark} style={styles.postModalAction}>
+              <Ionicons
+                name={isBookmarked ? "bookmark" : "bookmark-outline"}
+                size={28}
+                color={colors.white}
+              />
+              <Text style={styles.postModalText}>Bookmark Post</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onToggleLike} style={styles.postModalAction}>
+              <Ionicons
+                name={isLiked ? "heart" : "heart-outline"}
+                size={28}
+                color={isLiked ? colors.red : colors.white}
+              />
+              <Text style={styles.postModalText}>Like Post</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onViewComments} style={styles.postModalAction}>
+              <Ionicons name="chatbubble-outline" size={28} color={colors.white} />
+              <Text style={styles.postModalText}>See Comments</Text>
+            </TouchableOpacity>
+            {isOwner && (
+              <TouchableOpacity onPress={onDeletePost} style={styles.postModalAction}>
+                <Ionicons name="trash-outline" size={28} color={colors.red} />
+                <Text style={styles.postModalDeleteText}>Delete Post</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+      </View>
+    </Modal>
+  )
+}
+
+export default PostActionsModal

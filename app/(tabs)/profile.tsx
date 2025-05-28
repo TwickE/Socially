@@ -1,4 +1,5 @@
 import Loader from '@/components/Loader';
+import { useModalOverlay } from '@/context/ModalOverlayContext';
 import { api } from '@/convex/_generated/api';
 import { styles } from '@/styles/profile.styles';
 import { colors } from '@/styles/theme';
@@ -7,11 +8,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, Keyboard, KeyboardAvoidingView, Modal, Platform, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 const Profile = () => {
   const { signOut, userId } = useAuth();
+  const { requestShowOverlay, requestHideOverlay } = useModalOverlay();
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
   const router = useRouter();
@@ -37,6 +39,20 @@ const Profile = () => {
       bio: currentUser?.bio || '',
     });
   }
+  
+  useEffect(() => {
+    if (isEditModalVisible) {
+      requestShowOverlay();
+    } else {
+      requestHideOverlay();
+    }
+
+    return () => {
+      if (isEditModalVisible) {
+        requestHideOverlay();
+      }
+    }
+  }, [isEditModalVisible, requestShowOverlay, requestHideOverlay]);
 
   if (!currentUser || posts === undefined) {
     return (

@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    /* backgroundColor: "rgba(0, 0, 0, 0.5)", */
     justifyContent: "flex-end",
   },
   modalContent: {

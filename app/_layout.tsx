@@ -1,4 +1,6 @@
 import InitialLayout from "@/components/initialLayout";
+import ModalOverlay from "@/components/ModalOverlay";
+import { ModalOverlayProvider } from "@/context/ModalOverlayContext";
 import ClerkAndConvexProvider from "@/providers/ClerkAndConvexProvider";
 import { colors } from "@/styles/theme";
 import { useFonts } from "expo-font";
@@ -28,7 +30,7 @@ export default function RootLayout() {
   }, [fontsLoaded]);
 
   useEffect(() => {
-    if(Platform.OS === 'android') {
+    if (Platform.OS === 'android') {
       NavigationBar.setBackgroundColorAsync(colors.background);
       NavigationBar.setButtonStyleAsync('light');
     }
@@ -36,11 +38,14 @@ export default function RootLayout() {
 
   return (
     <ClerkAndConvexProvider>
-      <SafeAreaProvider>
-        <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} onLayout={onLayoutRootView}>
-          <InitialLayout />
-        </SafeAreaView>
-      </SafeAreaProvider>
+      <ModalOverlayProvider>
+        <SafeAreaProvider>
+          <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} onLayout={onLayoutRootView}>
+            <InitialLayout />
+            <ModalOverlay />
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </ModalOverlayProvider>
       <StatusBar style="light" />
     </ClerkAndConvexProvider>
   );

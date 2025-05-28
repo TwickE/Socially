@@ -1,4 +1,5 @@
 import CommentsModal from '@/components/CommentsModal';
+import PostActionsModal from '@/components/PostActionsModal';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { styles } from '@/styles/feed.styles';
@@ -32,6 +33,7 @@ type PostProps = {
 
 const Post = ({ post }: PostProps) => {
   const [showComments, setShowComments] = useState(false);
+  const [showPostActionsModal, setShowPostActionsModal] = useState(false);
 
   const { user } = useUser();
 
@@ -58,7 +60,7 @@ const Post = ({ post }: PostProps) => {
   }
 
   const handleDelete = async () => {
-    Alert.alert('Delete Post', 'Are you sure you want to delete this post?\nThis action is permanent', [
+    Alert.alert('Delete Post', 'Are you sure you want to delete this post?\nThis action is irreversible', [
       {
         text: 'Cancel',
         style: 'cancel'
@@ -75,6 +77,10 @@ const Post = ({ post }: PostProps) => {
         }
       }
     ]);
+  }
+
+  const handleShowActionsModal = () => {
+    setShowPostActionsModal(true);
   }
 
   return (
@@ -96,16 +102,10 @@ const Post = ({ post }: PostProps) => {
             <Text style={styles.postUsername}>{post.author.username}</Text>
           </TouchableOpacity>
         </Link>
-        {/* IF OWNER OF POST SHOW A DELETE BUTTON */}
-        {post.author._id === currentUser?._id ? (
-          <TouchableOpacity onPress={handleDelete}>
-            <Ionicons name="trash-outline" size={20} color={colors.red} />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity>
-            <Ionicons name="ellipsis-horizontal" size={20} color={colors.white} />
-          </TouchableOpacity>
-        )}
+        {/* POST ACTIONS MODAL TRIGGER */}
+        <TouchableOpacity onPress={handleShowActionsModal}>
+          <Ionicons name="ellipsis-horizontal" size={20} color={colors.white} />
+        </TouchableOpacity>
       </View>
       {/* POST IMAGE */}
       <Image
@@ -157,11 +157,29 @@ const Post = ({ post }: PostProps) => {
           {formatDistanceToNow(post._creationTime, { addSuffix: true })}
         </Text>
       </View>
-
+      {/* COMMENTS MODAL */}
       <CommentsModal
         postId={post._id}
         visible={showComments}
         onClose={() => setShowComments(false)}
+      />
+      {/* POST ACTIONS MODAL */}
+      <PostActionsModal
+        visible={showPostActionsModal}
+        onClose={() => setShowPostActionsModal(false)}
+        isLiked={post.isLiked}
+        onToggleLike={handleLike}
+        isBookmarked={post.isBookmarked}
+        onToggleBookmark={handleBookmark}
+        onViewComments={() => {
+          setShowPostActionsModal(false);
+          setShowComments(true);
+        }}
+        onDeletePost={() => {
+          setShowPostActionsModal(false);
+          handleDelete();
+        }}
+        isOwner={post.author._id === currentUser?._id}
       />
     </View>
   )

@@ -8,4 +8,5 @@ export const colors = {
   white: '#ffffff',
   grey: '#9ca3af',
   red: '#ff0000',
+  modalOverlay: 'rgba(0, 0, 0, 0.5)',
 } as const;
