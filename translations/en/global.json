@@ -9,10 +9,21 @@
 
   },
   "bookmarks": {
-
+    "title": "Bookmarks",
+    "noBookmarks": "No bookmarked posts yet."
   },
   "profile": {
-
+    "loadingTitle": "Profile",
+    "posts": "Posts",
+    "followers": "Followers",
+    "following": "Following",
+    "editProfile": "Edit Profile",
+    "editModal": {
+      "title": "Edit Profile",
+      "name": "Name",
+      "bio": "Bio",
+      "saveChanges": "Save Changes"
+    },
     "settingsModal": {
       "title": "Settings",
       "language": "Language",

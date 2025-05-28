@@ -10,6 +10,7 @@ import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, Keyboard, KeyboardAvoidingView, Modal, Platform, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
 const Profile = () => {
@@ -19,6 +20,7 @@ const Profile = () => {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
   const router = useRouter();
+  const { t } = useTranslation("global");
 
   const [editedProfile, setEditedProfile] = useState({
     fullname: currentUser?.fullname || '',
@@ -64,7 +66,7 @@ const Profile = () => {
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={24} color={colors.white} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Profile</Text>
+          <Text style={styles.headerTitle}>{t("profile.loadingTitle")}</Text>
           <TouchableOpacity style={styles.headerIcon} onPress={() => signOut()}>
             <Ionicons name="log-out-outline" size={24} color={colors.white} />
           </TouchableOpacity>
@@ -103,15 +105,15 @@ const Profile = () => {
             <View style={styles.statsContainer}>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{currentUser.posts}</Text>
-                <Text style={styles.statLabel}>Posts</Text>
+                <Text style={styles.statLabel}>{t("profile.posts")}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{currentUser.followers}</Text>
-                <Text style={styles.statLabel}>Followers</Text>
+                <Text style={styles.statLabel}>{t("profile.followers")}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{currentUser.following}</Text>
-                <Text style={styles.statLabel}>Following</Text>
+                <Text style={styles.statLabel}>{t("profile.following")}</Text>
               </View>
             </View>
           </View>
@@ -121,7 +123,7 @@ const Profile = () => {
           {/* EDIT PROFILE BUTTON */}
           <View style={styles.actionButtons}>
             <TouchableOpacity style={styles.editButton} onPress={() => setIsEditModalVisible(true)}>
-              <Text style={styles.editButtonText}>Edit Profile</Text>
+              <Text style={styles.editButtonText}>{t("profile.editProfile")}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.shareButton}>
               <Ionicons name="share-outline" size={20} color={colors.white} />
@@ -162,13 +164,13 @@ const Profile = () => {
           >
             <View style={styles.modalContent}>
               <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Edit Profile</Text>
+                <Text style={styles.modalTitle}>{t("profile.editModal.title")}</Text>
                 <TouchableOpacity onPress={handleCloseEditModal}>
                   <Ionicons name="close" size={24} color={colors.white} />
                 </TouchableOpacity>
               </View>
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Name</Text>
+                <Text style={styles.inputLabel}>{t("profile.editModal.name")}</Text>
                 <TextInput
                   style={styles.input}
                   value={editedProfile.fullname}
@@ -177,7 +179,7 @@ const Profile = () => {
                 />
               </View>
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Bio</Text>
+                <Text style={styles.inputLabel}>{t("profile.editModal.bio")}</Text>
                 <TextInput
                   style={[styles.input, styles.bioInput]}
                   value={editedProfile.bio}
@@ -188,7 +190,7 @@ const Profile = () => {
                 />
               </View>
               <TouchableOpacity style={styles.saveButton} onPress={handleSaveProfile}>
-                <Text style={styles.saveButtonText}>Save Changes</Text>
+                <Text style={styles.saveButtonText}>{t("profile.editModal.saveChanges")}</Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>

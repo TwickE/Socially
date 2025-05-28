@@ -9,10 +9,21 @@
 
   },
   "bookmarks": {
-
+    "title": "Guardados",
+    "noBookmarks": "Sem publicações guardadas ainda."
   },
   "profile": {
-
+    "loadingTitle": "Perfil",
+    "posts": "Publicações",
+    "followers": "Seguidores",
+    "following": "A Seguir",
+    "editProfile": "Editar Perfil",
+    "editModal": {
+      "title": "Editar Perfil",
+      "name": "Nome",
+      "bio": "Bio",
+      "saveChanges": "Guardar Alterações"
+    },
     "settingsModal": {
       "title": "Definições",
       "language": "Língua",

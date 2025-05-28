@@ -6,11 +6,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 const Bookmarks = () => {
   const bookmarkedPosts = useQuery(api.bookmarks.getBookmarkedPosts);
   const router = useRouter();
+  const { t } = useTranslation("global");
 
   return (
     <View style={styles.container}>
@@ -19,7 +21,7 @@ const Bookmarks = () => {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color={colors.white} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Bookmarks</Text>
+        <Text style={styles.headerTitle}>{t("bookmarks.title")}</Text>
         <View style={{ width: 24 }} />
       </View>
       {/* BOOKMARKS */}
@@ -56,6 +58,8 @@ const Bookmarks = () => {
 export default Bookmarks
 
 function NoBookmarksFound() {
+  const { t } = useTranslation("global");
+  
   return (
     <View
       style={{
@@ -66,7 +70,7 @@ function NoBookmarksFound() {
       }}
     >
       <Ionicons name="bookmark-outline" size={48} color={colors.primary} />
-      <Text style={{ fontSize: 20, color: colors.white }}>No bookmarked posts yet</Text>
+      <Text style={{ fontSize: 20, color: colors.white }}>{t("bookmarks.noBookmarks")}</Text>
     </View>
   )
 }
