@@ -53,6 +53,7 @@ export default defineSchema({
     postId: v.optional(v.id("posts")),
     commentId: v.optional(v.id("comments")),
   }).index("by_receiver", ["receiverId"])
+    .index("by_both_and_type", ["receiverId", "senderId", "type"])
     .index("by_post", ["postId"]),
 
   bookmarks: defineTable({

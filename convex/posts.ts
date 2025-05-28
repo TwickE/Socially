@@ -99,6 +99,17 @@ export const toggleLike = mutation({
     if (existing) {
       await ctx.db.delete(existing._id);
       await ctx.db.patch(args.postId, { likes: post.likes - 1 });
+
+      const deleteNotification = await ctx.db.query("notifications")
+        .withIndex("by_both_and_type", (q) =>
+          q.eq("receiverId", post.userId)
+            .eq("senderId", currentUser._id)
+            .eq("type", "like"))
+        .first();
+
+      if (deleteNotification) {
+        await ctx.db.delete(deleteNotification._id);
+      }
       return false;
     } else {
       await ctx.db.insert("likes", {

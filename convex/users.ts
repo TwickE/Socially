@@ -121,6 +121,18 @@ export const toggleFollow = mutation({
     if (existingFollow) {
       await ctx.db.delete(existingFollow._id);
       await updateFollowCounts(ctx, currentUser._id, args.followingId, false);
+
+      const deleteNotification = await ctx.db
+        .query("notifications")
+        .withIndex("by_both_and_type", (q) =>
+          q.eq("receiverId", args.followingId)
+            .eq("senderId", currentUser._id)
+            .eq("type", "follow"))
+        .first();
+
+      if (deleteNotification) {
+        await ctx.db.delete(deleteNotification._id);
+      }
     } else {
       await ctx.db.insert("follows", {
         followerId: currentUser._id,
