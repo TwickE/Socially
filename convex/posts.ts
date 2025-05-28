@@ -42,6 +42,7 @@ export const createPost = mutation({
 });
 
 export const getFeedPosts = query({
+  args: { _trigger: v.optional(v.number()) },
   handler: async (ctx) => {
     const currentUser = await getAuthenticatedUser(ctx);
 

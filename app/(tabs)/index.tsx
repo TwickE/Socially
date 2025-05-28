@@ -8,22 +8,26 @@ import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { Link } from "expo-router";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   const { signOut } = useAuth();
   const [refreshing, setRefreshing] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  const posts = useQuery(api.posts.getFeedPosts);
+  const posts = useQuery(api.posts.getFeedPosts, { _trigger: refreshKey });
 
-  // TODO: Implement pull to refresh
-  const onRefresh = () => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => {
+    setRefreshKey(prevKey => prevKey + 1);
+  }, []);
+
+  useEffect(() => {
+    if (refreshing && posts !== undefined) {
       setRefreshing(false);
-    }, 2000);
-  }
+    }
+  }, [refreshing, posts]);
 
   return (
     <View style={styles.container}>
