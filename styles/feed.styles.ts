@@ -223,7 +223,7 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   postModalContent: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.surface,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,

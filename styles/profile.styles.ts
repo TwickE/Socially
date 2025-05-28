@@ -103,11 +103,10 @@ export const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    /* backgroundColor: "rgba(0, 0, 0, 0.5)", */
     justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.surface,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -133,7 +132,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
   },
   input: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.background,
     borderRadius: 8,
     padding: 12,
     color: colors.white,
@@ -225,4 +224,39 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     color: colors.white,
   },
+  settingsModalContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  settingsModalContent: {
+    backgroundColor: colors.surface,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    minHeight: 400,
+  },
+  settingsModalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  settingsModalTitle: {
+    color: colors.white,
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  settingsModalAction: {
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    gap: 8,
+    padding: 16,
+    backgroundColor: colors.background,
+    borderRadius: 8,
+  },
+   settingsModalActionText: {
+    color: colors.white,
+    fontSize: 16,
+   }
 });

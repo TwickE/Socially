@@ -1,0 +1,25 @@
+{
+  "home": {
+    
+  },
+  "search": {
+
+  },
+  "create": {
+
+  },
+  "bookmarks": {
+
+  },
+  "profile": {
+
+    "settingsModal": {
+      "title": "Definições",
+      "language": "Língua",
+      "theme": "Tema",
+      "darkMode": "Escuro",
+      "lightMode": "Claro",
+      "systemDefault": "Sistema"
+    }
+  }
+}
