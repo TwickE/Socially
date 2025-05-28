@@ -41,7 +41,7 @@ export const createPost = mutation({
   }
 });
 
-export const getFeedPosts = query({
+export const getAllPosts = query({
   args: { _trigger: v.optional(v.number()) },
   handler: async (ctx) => {
     const currentUser = await getAuthenticatedUser(ctx);
@@ -76,6 +76,62 @@ export const getFeedPosts = query({
           isLiked: !!like,
           isBookmarked: !!bookmark
         }
+      })
+    );
+
+    return postsWithInfo;
+  }
+});
+
+export const getFeedPosts = query({
+  args: { _trigger: v.optional(v.number()) },
+  handler: async (ctx) => {
+    const currentUser = await getAuthenticatedUser(ctx);
+
+    const followedUsersRelations = await ctx.db
+      .query("follows")
+      .withIndex("by_follower", (q) => q.eq("followerId", currentUser._id))
+      .collect();
+
+    const followedUserIds = new Set(
+      followedUsersRelations.map((relation) => relation.followingId)
+    );
+    followedUserIds.add(currentUser._id);
+
+    const allPosts = await ctx.db.query("posts").order("desc").collect();
+
+    const feedPostsData = allPosts.filter((post) =>
+      followedUserIds.has(post.userId)
+    );
+
+    if (feedPostsData.length === 0) {
+      return [];
+    }
+
+    const postsWithInfo = await Promise.all(
+      feedPostsData.map(async (post) => {
+        const postAuthor = (await ctx.db.get(post.userId))!;
+
+        const like = await ctx.db.query("likes")
+          .withIndex("by_user_and_post", (q) =>
+            q.eq("userId", currentUser._id).eq("postId", post._id))
+          .first();
+
+        const bookmark = await ctx.db.query("bookmarks")
+          .withIndex("by_user_and_post", (q) =>
+            q.eq("userId", currentUser._id).eq("postId", post._id))
+          .first();
+
+        return {
+          ...post,
+          author: {
+            _id: postAuthor?._id,
+            username: postAuthor?.username,
+            image: postAuthor?.image
+          },
+          isLiked: !!like,
+          isBookmarked: !!bookmark
+        };
       })
     );
 
