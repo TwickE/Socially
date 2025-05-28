@@ -1,4 +1,5 @@
 import Loader from '@/components/Loader';
+import SettingsModal from '@/components/SettingsModal';
 import { useModalOverlay } from '@/context/ModalOverlayContext';
 import { api } from '@/convex/_generated/api';
 import { styles } from '@/styles/profile.styles';
@@ -15,6 +16,7 @@ const Profile = () => {
   const { signOut, userId } = useAuth();
   const { requestShowOverlay, requestHideOverlay } = useModalOverlay();
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
   const router = useRouter();
 
@@ -41,18 +43,18 @@ const Profile = () => {
   }
   
   useEffect(() => {
-    if (isEditModalVisible) {
+    if (isEditModalVisible || isSettingsModalVisible) {
       requestShowOverlay();
     } else {
       requestHideOverlay();
     }
 
     return () => {
-      if (isEditModalVisible) {
+      if (isEditModalVisible || isSettingsModalVisible) {
         requestHideOverlay();
       }
     }
-  }, [isEditModalVisible, requestShowOverlay, requestHideOverlay]);
+  }, [isEditModalVisible, isSettingsModalVisible, requestShowOverlay, requestHideOverlay]);
 
   if (!currentUser || posts === undefined) {
     return (
@@ -81,8 +83,8 @@ const Profile = () => {
           <Ionicons name="arrow-back" size={24} color={colors.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{currentUser.username}</Text>
-        <TouchableOpacity style={styles.headerIcon} onPress={() => signOut()}>
-          <Ionicons name="log-out-outline" size={24} color={colors.white} />
+        <TouchableOpacity style={styles.headerIcon} onPress={() => setIsSettingsModalVisible(true)}>
+          <Ionicons name="settings-outline" size={24} color={colors.white} />
         </TouchableOpacity>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -146,7 +148,6 @@ const Profile = () => {
           )}
         />
       </ScrollView>
-
       {/* EDIT PROFILE MODAL */}
       <Modal
         visible={isEditModalVisible}
@@ -193,6 +194,11 @@ const Profile = () => {
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </Modal>
+      {/* SETTINGS MODAL */}
+      <SettingsModal
+        visible={isSettingsModalVisible}
+        onClose={() => setIsSettingsModalVisible(false)}
+      />
     </View>
   )
 }

@@ -1,33 +1,19 @@
 import { useModalOverlay } from '@/context/ModalOverlayContext';
 import { styles } from '@/styles/feed.styles';
 import { colors } from '@/styles/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
 
-type PostActionsModalProps = {
+type SettingsModalProps = {
   visible: boolean;
   onClose: () => void;
-  isLiked: boolean;
-  onToggleLike: () => void;
-  isBookmarked: boolean;
-  onToggleBookmark: () => void;
-  onViewComments: () => void;
-  onDeletePost: () => void | undefined;
-  isOwner: boolean;
 }
 
-const PostActionsModal = ({
+const SettingsModal = ({
   visible,
   onClose,
-  isLiked,
-  onToggleLike,
-  isBookmarked,
-  onToggleBookmark,
-  onViewComments,
-  onDeletePost,
-  isOwner
-}: PostActionsModalProps) => {
+}: SettingsModalProps) => {
   const { requestShowOverlay, requestHideOverlay } = useModalOverlay();
 
   useEffect(() => {
@@ -55,14 +41,29 @@ const PostActionsModal = ({
         <View style={styles.postModalContent}>
           {/* HEADER */}
           <View style={styles.postModalHeader}>
-            <Text style={styles.postModalTitle}>Post Actions</Text>
+            <Text style={styles.postModalTitle}>Settings</Text>
             <TouchableOpacity onPress={onClose}>
               <Ionicons name="close" size={32} color={colors.white} />
             </TouchableOpacity>
           </View>
           <View style={styles.postModalActions}>
-            {/* Actions */}
-            <TouchableOpacity onPress={onToggleBookmark} style={styles.postModalAction}>
+            {/* LANGUAGE SETTINGS */}
+            <View style={{ flexDirection: "column", gap: 8 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                <MaterialIcons name="language" size={28} color="white" />
+                <Text style={{ color: "white", fontSize: 16, fontWeight: 600 }}>Language</Text>
+              </View>
+              <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                <Text style={{ color: "white", fontSize: 16 }}>🇵🇹 Portuguese</Text>
+                <MaterialIcons name="radio-button-unchecked" size={24} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                <Text style={{ color: "white", fontSize: 16 }}>🇬🇧 English</Text>
+                <MaterialIcons name="radio-button-unchecked" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+            {/* THEME SETTINGS */}
+            {/* <TouchableOpacity onPress={onToggleBookmark} style={styles.postModalAction}>
               <Ionicons
                 name={isBookmarked ? "bookmark" : "bookmark-outline"}
                 size={28}
@@ -87,7 +88,7 @@ const PostActionsModal = ({
                 <Ionicons name="trash-outline" size={28} color={colors.red} />
                 <Text style={styles.postModalDeleteText}>Delete Post</Text>
               </TouchableOpacity>
-            )}
+            )} */}
           </View>
         </View>
       </View>
@@ -95,4 +96,4 @@ const PostActionsModal = ({
   )
 }
 
-export default PostActionsModal
+export default SettingsModal
