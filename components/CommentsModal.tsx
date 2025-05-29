@@ -7,6 +7,7 @@ import { colors } from '@/styles/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, KeyboardAvoidingView, Modal, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 type CommentsModalProps = {
@@ -19,9 +20,10 @@ const CommentsModal = ({ onClose, postId, visible }: CommentsModalProps) => {
   const [newComment, setNewComment] = useState("");
   const comments = useQuery(api.comments.getComments, { postId });
   const addComment = useMutation(api.comments.addComment);
+  const { t } = useTranslation("global");
 
   const handleAddComment = async () => {
-    if(!newComment.trim()) return;
+    if (!newComment.trim()) return;
 
     try {
       await addComment({ content: newComment, postId });
@@ -48,13 +50,13 @@ const CommentsModal = ({ onClose, postId, visible }: CommentsModalProps) => {
           <TouchableOpacity onPress={onClose}>
             <Ionicons name="close" size={24} color={colors.white} />
           </TouchableOpacity>
-          <Text style={styles.modalTitle}>Comments</Text>
+          <Text style={styles.modalTitle}>{t("home.post.commentsModal.title")}</Text>
           <View style={{ width: 24 }} />
         </View>
         {/* COMMENTS */}
         {comments === undefined ? (
           <Loader />
-        ): (
+        ) : (
           <FlatList
             data={comments}
             keyExtractor={(item) => item._id.toString()}
@@ -66,7 +68,7 @@ const CommentsModal = ({ onClose, postId, visible }: CommentsModalProps) => {
         <View style={styles.commentInput}>
           <TextInput
             style={styles.input}
-            placeholder="Add a comment..."
+            placeholder={t("home.post.commentsModal.inputPlaceholder")}
             placeholderTextColor={colors.grey}
             value={newComment}
             onChangeText={setNewComment}
@@ -76,7 +78,9 @@ const CommentsModal = ({ onClose, postId, visible }: CommentsModalProps) => {
             onPress={handleAddComment}
             disabled={!newComment.trim()}
           >
-            <Text style={[styles.postButton, !newComment.trim() && styles.postButtonDisabled]}>Post</Text>
+            <Text style={[styles.postButton, !newComment.trim() && styles.postButtonDisabled]}>
+              {t("home.post.commentsModal.postButton")}
+            </Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

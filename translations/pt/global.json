@@ -13,7 +13,21 @@
       "likes_one": "{{count}} gosto",
       "likes_other": "{{count}} gostos",
       "comments": "Vê {{count}} comentário",
-      "comments_other": "Vê os {{count}} comentários"
+      "comments_other": "Vê os {{count}} comentários",
+      "commentsModal": {
+        "title": "Comentários",
+        "inputPlaceholder": "Escreve um comentário...",
+        "postButton": "Publicar"
+      },
+      "postActionsModal": {
+        "title": "Ações de Publicação",
+        "bookmark_true": "Remover do Guardados",
+        "bookmark_false": "Guardar Publicação",
+        "like_true": "Desgostar Publicação",
+        "like_false": "Gostar Publicação",
+        "comments": "Ver Comentários",
+        "delete": "Apagar Publicação"
+      }
     }
   },
   "search": {
@@ -51,7 +65,10 @@
       "darkMode": "Escuro",
       "lightMode": "Claro",
       "systemDefault": "Sistema"
-    }
+    },
+    "userLoadingTitle": "Perfil de Utilizador",
+    "followButton_true": "A Seguir",
+    "followButton_false": "Seguir"
   },
   "notifications": {
     "title": "Notificações",

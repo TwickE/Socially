@@ -7,11 +7,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 const UserProfileScreen = () => {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { t } = useTranslation("global");
 
   const profile = useQuery(api.users.getUserProfile, { id: id as Id<"users"> });
   const posts = useQuery(api.posts.getPostsByUser, { userId: id as Id<"users"> });
@@ -35,7 +37,7 @@ const UserProfileScreen = () => {
           <TouchableOpacity onPress={handleBack}>
             <Ionicons name="arrow-back" size={24} color={colors.white} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>User Profile</Text>
+          <Text style={styles.headerTitle}>{t("profile.userLoadingTitle")}</Text>
           <View style={{ width: 24 }} />
         </View>
         {/* LOADER */}
@@ -69,15 +71,15 @@ const UserProfileScreen = () => {
             <View style={styles.statsContainer}>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.posts}</Text>
-                <Text style={styles.statLabel}>Posts</Text>
+                <Text style={styles.statLabel}>{t("profile.posts")}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.followers}</Text>
-                <Text style={styles.statLabel}>Followers</Text>
+                <Text style={styles.statLabel}>{t("profile.followers")}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.following}</Text>
-                <Text style={styles.statLabel}>Following</Text>
+                <Text style={styles.statLabel}>{t("profile.following")}</Text>
               </View>
             </View>
           </View>
@@ -90,7 +92,7 @@ const UserProfileScreen = () => {
             onPress={() => toggleFollow({ followingId: id as Id<"users"> })}
           >
             <Text style={[styles.followButtonText, isFollowing && styles.followingButtonText]}>
-              {isFollowing ? 'Following' : 'Follow'}
+              {t("profile.followButton", { context: String(isFollowing) })}
             </Text>
           </Pressable>
         </View>
@@ -99,7 +101,7 @@ const UserProfileScreen = () => {
           {posts.length === 0 ? (
             <View style={styles.noPostsContainer}>
               <Ionicons name="images-outline" size={48} color={colors.grey} />
-              <Text style={styles.noPostsText}>No posts yet</Text>
+              <Text style={styles.noPostsText}>{t("home.noPosts")}</Text>
             </View>
           ) : (
             <FlatList

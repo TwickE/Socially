@@ -1,5 +1,7 @@
 import { styles } from '@/styles/feed.styles';
 import { formatDistanceToNow } from 'date-fns';
+import { enUS, pt } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 import { Image, Text, View } from 'react-native';
 
 interface CommentProps {
@@ -12,6 +14,8 @@ interface CommentProps {
 }
 
 const Comment = ({ comment }: { comment: CommentProps }) => {
+  const { i18n } = useTranslation("global");
+
   return (
     <View style={styles.commentContainer}>
       <Image source={{ uri: comment.user.image }} style={styles.commentAvatar} />
@@ -19,7 +23,7 @@ const Comment = ({ comment }: { comment: CommentProps }) => {
         <Text style={styles.commentUsername}>{comment.user.fullName}</Text>
         <Text style={styles.commentText}>{comment.content}</Text>
         <Text style={styles.commentTime}>
-          {formatDistanceToNow(comment._creationTime, { addSuffix: true })}
+          {formatDistanceToNow(comment._creationTime, { addSuffix: true, locale: i18n.language === 'pt' ? pt : enUS })}
         </Text>
       </View>
     </View>

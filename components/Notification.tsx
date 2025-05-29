@@ -40,8 +40,6 @@ type NotificationProps = {
 const Notification = ({ notification }: NotificationProps) => {
   const { t, i18n } = useTranslation("global");
 
-  console.log(notification.post);
-
   return (
     <View style={styles.notificationItem}>
       <View style={styles.notificationContent}>

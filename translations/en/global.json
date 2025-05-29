@@ -13,7 +13,21 @@
       "likes_one": "{{count}} like",
       "likes_other": "{{count}} likes",
       "comments": "View {{count}} comment",
-      "comments_other": "View all {{count}} comments"
+      "comments_other": "View all {{count}} comments",
+      "commentsModal": {
+        "title": "Comments",
+        "inputPlaceholder": "Write a comment...",
+        "postButton": "Post"
+      },
+      "postActionsModal": {
+        "title": "Post Actions",
+        "bookmark_true": "Remove Bookmark",
+        "bookmark_false": "Bookmark Post",
+        "like_true": "Unlike Post",
+        "like_false": "Like Post",
+        "comments": "See Comments",
+        "delete": "Delete Post"
+      }
     }
   },
   "search": {
@@ -51,7 +65,10 @@
       "darkMode": "Dark",
       "lightMode": "Light",
       "systemDefault": "System"
-    }
+    },
+    "userLoadingTitle": "User Profile",
+    "followButton_true": "Following",
+    "followButton_false": "Follow"
   },
   "notifications": {
     "title": "Notifications",
