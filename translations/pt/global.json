@@ -62,9 +62,9 @@
       "title": "Definições",
       "language": "Língua",
       "theme": "Tema",
-      "darkMode": "Escuro",
-      "lightMode": "Claro",
-      "systemDefault": "Sistema"
+      "darkModeSwitch": "Modo Escuro",
+      "systemModeSwitch": "Usar Definições do Dispositivo",
+      "themeDescription": "Defina Usar Definições do Dispositivo para usar o Modo Claro ou Escuro conforme as definições do seu dispositivo."
     },
     "userLoadingTitle": "Perfil de Utilizador",
     "followButton_true": "A Seguir",

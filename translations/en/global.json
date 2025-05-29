@@ -62,9 +62,9 @@
       "title": "Settings",
       "language": "Language",
       "theme": "Theme",
-      "darkMode": "Dark",
-      "lightMode": "Light",
-      "systemDefault": "System"
+      "darkModeSwitch": "Dark Mode",
+      "systemModeSwitch": "Use Device Settings",
+      "themeDescription": "Set Use Device Settings to use the Light or Dark mode based on your device settings."
     },
     "userLoadingTitle": "User Profile",
     "followButton_true": "Following",

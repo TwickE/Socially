@@ -3,9 +3,9 @@ import { useModalOverlay } from '@/context/ModalOverlayContext';
 import { styles } from '@/styles/profile.styles';
 import { colors } from '@/styles/theme';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 type SettingsModalProps = {
   visible: boolean;
@@ -19,6 +19,9 @@ const SettingsModal = ({
   const { requestShowOverlay, requestHideOverlay } = useModalOverlay();
   const { t, i18n } = useTranslation("global");
   const { changeLanguage } = useLanguage();
+
+  const [darkModeSwitch, setDarkModeSwitch] = useState(false);
+  const [systemModeSwitch, setSystemModeSwitch] = useState(false);
 
   useEffect(() => {
     if (visible) {
@@ -67,7 +70,27 @@ const SettingsModal = ({
               </TouchableOpacity>
             </View>
             {/* THEME SETTINGS */}
-            
+            <View style={{ flexDirection: "column", gap: 8 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                <Ionicons name="invert-mode-sharp" size={28} color="white" />
+                <Text style={[styles.settingsModalActionText, { fontWeight: 600 }]}>{t("profile.settingsModal.theme")}</Text>
+              </View>
+              <View style={styles.settingsModalActionTheme}>
+                <Text style={styles.settingsModalActionText}>{t("profile.settingsModal.darkModeSwitch")}</Text>
+                <Switch
+                  onValueChange={() => setDarkModeSwitch(!darkModeSwitch)}
+                  value={darkModeSwitch}
+                />
+              </View>
+              <View style={styles.settingsModalActionTheme}>
+                <Text style={styles.settingsModalActionText}>{t("profile.settingsModal.systemModeSwitch")}</Text>
+                <Switch
+                  onValueChange={() => setSystemModeSwitch(!systemModeSwitch)}
+                  value={systemModeSwitch}
+                />
+              </View>
+              <Text style={{ fontSize: 16, color: colors.grey }}>{t("profile.settingsModal.themeDescription")}</Text>
+            </View>
           </View>
         </View>
       </View>

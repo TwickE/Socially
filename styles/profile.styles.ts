@@ -233,7 +233,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    minHeight: 400,
+    minHeight: 500,
   },
   settingsModalHeader: {
     flexDirection: "row",
@@ -247,16 +247,26 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
   },
   settingsModalAction: {
-    flexDirection: "row", 
-    justifyContent: "space-between", 
-    alignItems: "center", 
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     gap: 8,
     padding: 16,
     backgroundColor: colors.background,
     borderRadius: 8,
   },
-   settingsModalActionText: {
+  settingsModalActionText: {
     color: colors.white,
     fontSize: 16,
-   }
+  },
+  settingsModalActionTheme: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: colors.background,
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    height: 56
+  },
 });
