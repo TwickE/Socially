@@ -1,16 +1,22 @@
 {
   "home": {
-    
+    "noPosts": "Sem publicações ainda"
   },
   "search": {
-
+    "noResults": "Nenhum utilizador encontrado para a pesquisa:",
+    "title": "Procurar",
+    "inputPlaceholder": "Pesquisar utilizadores"
   },
   "create": {
-
+    "title": "Nova Publicação",
+    "description": "Clique para selecionar uma imagem",
+    "shareButton": "Publicar",
+    "changeImageButton": "Alterar",
+    "captionPlaceholder": "Escreva uma descrição..."
   },
   "bookmarks": {
     "title": "Guardados",
-    "noBookmarks": "Sem publicações guardadas ainda."
+    "noBookmarks": "Sem publicações guardadas ainda"
   },
   "profile": {
     "loadingTitle": "Perfil",
@@ -31,6 +37,15 @@
       "darkMode": "Escuro",
       "lightMode": "Claro",
       "systemDefault": "Sistema"
+    }
+  },
+  "notifications": {
+    "title": "Notificações",
+    "noNotifications": "Sem notificações ainda",
+    "notification": {
+      "newFollower": "Começou a seguir-te",
+      "newLike": "Gostou da tua publicação",
+      "newComment": "Comentou:"
     }
   }
 }

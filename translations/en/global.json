@@ -1,16 +1,22 @@
 {
   "home": {
-    
+    "noPosts": "No posts yet"
   },
   "search": {
-
+    "noResults": "No user found for:",
+    "title": "Search",
+    "inputPlaceholder": "Search for users"
   },
   "create": {
-
+    "title": "New Post",
+    "description": "Tap to select an image",
+    "shareButton": "Share",
+    "changeImageButton": "Change",
+    "captionPlaceholder": "Write a caption..."
   },
   "bookmarks": {
     "title": "Bookmarks",
-    "noBookmarks": "No bookmarked posts yet."
+    "noBookmarks": "No bookmarked posts yet"
   },
   "profile": {
     "loadingTitle": "Profile",
@@ -31,6 +37,15 @@
       "darkMode": "Dark",
       "lightMode": "Light",
       "systemDefault": "System"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "No notifications yet",
+    "notification": {
+      "newFollower": "Started following you",
+      "newLike": "Liked your post",
+      "newComment": "Commented:"
     }
   }
 }

@@ -6,11 +6,13 @@ import { colors } from '@/styles/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 const Notifications = () => {
   const notifications = useQuery(api.notifications.getNotifications);
   const router = useRouter();
+  const { t } = useTranslation("global");
 
   return (
     <View style={styles.container}>
@@ -19,7 +21,7 @@ const Notifications = () => {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color={colors.white} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Notifications</Text>
+        <Text style={styles.headerTitle}>{t("notifications.title")}</Text>
         <View style={{ width: 24 }} />
       </View>
       {/* NOTIFICATIONS LIST */}
@@ -44,10 +46,12 @@ const Notifications = () => {
 export default Notifications
 
 function NoNotifications() {
+  const { t } = useTranslation("global");
+  
   return (
     <View style={[styles.container, styles.centered]}>
       <Ionicons name="notifications-outline" size={48} color={colors.primary} />
-      <Text style={{ fontSize: 20, color: colors.white }}>No notifications yet</Text>
+      <Text style={{ fontSize: 20, color: colors.white }}>{t("notifications.noNotifications")}</Text>
     </View>
   )
 }

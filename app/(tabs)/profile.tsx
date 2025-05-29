@@ -208,6 +208,8 @@ const Profile = () => {
 export default Profile
 
 function NoPostsFound() {
+  const { t } = useTranslation("global");
+
   return (
     <View style={{
       height: '100%',
@@ -216,7 +218,7 @@ function NoPostsFound() {
       alignItems: 'center',
     }}>
       <Ionicons name="image-outline" size={48} color={colors.primary} />
-      <Text style={{ fontSize: 20, color: colors.white }}>No posts yet</Text>
+      <Text style={{ fontSize: 20, color: colors.white }}>{t("home.noPosts")}</Text>
     </View>
   )
 }

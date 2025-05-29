@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { Link } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
@@ -71,15 +72,19 @@ export default function Index() {
   );
 }
 
-const NoPostsFound = () => (
-  <View style={{
-    flex: 1,
-    backgroundColor: colors.background,
-    justifyContent: "center",
-    alignItems: "center",
-  }}>
-    <Ionicons name="images-outline" size={50} color={colors.primary} />
-    <Text style={{ fontSize: 20, color: colors.white }}>No posts yet</Text>
-  </View>
-);
+const NoPostsFound = () => {
+  const { t } = useTranslation("global");
+
+  return (
+    <View style={{
+      flex: 1,
+      backgroundColor: colors.background,
+      justifyContent: "center",
+      alignItems: "center",
+    }}>
+      <Ionicons name="images-outline" size={50} color={colors.primary} />
+      <Text style={{ fontSize: 20, color: colors.white }}>{t("home.noPosts")}</Text>
+    </View>
+  )
+}
 

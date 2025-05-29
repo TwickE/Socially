@@ -8,12 +8,15 @@ import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const Search = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+  const { t } = useTranslation("global");
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -41,7 +44,7 @@ const Search = () => {
     }
 
     if (searchResults && searchResults.length === 0 && debouncedSearchTerm.length >= 2) {
-      return <Text style={styles.infoText}>{`No users found for: ${debouncedSearchTerm}`}</Text>;
+      return <Text style={styles.infoText}>{`${t("search.noResults")} ${debouncedSearchTerm}`}</Text>;
     }
 
     if (searchResults && searchResults.length > 0) {
@@ -66,7 +69,7 @@ const Search = () => {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color={colors.white} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Search</Text>
+        <Text style={styles.headerTitle}>{t("search.title")}</Text>
         <View style={{ width: 24 }} />
       </View>
       <KeyboardAvoidingView
@@ -77,7 +80,7 @@ const Search = () => {
         <View style={styles.searchInput}>
           <TextInput
             style={styles.input}
-            placeholder="Search for a user"
+            placeholder={t("search.inputPlaceholder")}
             placeholderTextColor={colors.grey}
             value={searchTerm}
             onChangeText={setSearchTerm}

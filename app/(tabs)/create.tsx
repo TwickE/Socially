@@ -9,6 +9,7 @@ import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const CreateScreen = () => {
@@ -18,6 +19,8 @@ const CreateScreen = () => {
   const [caption, setCaption] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isSharing, setIsSharing] = useState(false);
+
+  const { t } = useTranslation("global");
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -74,13 +77,13 @@ const CreateScreen = () => {
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={24} color={colors.white} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>New Post</Text>
+          <Text style={styles.headerTitle}>{t("create.title")}</Text>
           <View style={{ width: 24 }} />
         </View>
         {/* EMPTY IMAGE SELECTOR */}
         <TouchableOpacity style={styles.emptyImageContainer} onPress={pickImage}>
           <Ionicons name="image-outline" size={48} color={colors.primary} />
-          <Text style={styles.emptyImageText}>Tap to select an image</Text>
+          <Text style={styles.emptyImageText}>{t("create.description")}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -104,7 +107,7 @@ const CreateScreen = () => {
           >
             <Ionicons name="close-outline" size={24} color={isSharing ? colors.grey : colors.white} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>New Post</Text>
+          <Text style={styles.headerTitle}>{t("create.title")}</Text>
           <TouchableOpacity
             style={[styles.shareButton, isSharing && styles.shareButtonDisabled]}
             disabled={isSharing || !selectedImage}
@@ -113,7 +116,7 @@ const CreateScreen = () => {
             {isSharing ? (
               <ActivityIndicator size="small" color={colors.primary} />
             ) : (
-              <Text style={styles.shareText}>Share</Text>
+              <Text style={styles.shareText}>{t("create.shareButton")}</Text>
             )}
           </TouchableOpacity>
         </View>
@@ -138,7 +141,7 @@ const CreateScreen = () => {
                 disabled={isSharing}
               >
                 <Ionicons name="image-outline" size={20} color={colors.white} />
-                <Text style={styles.changeImageText}>Change</Text>
+                <Text style={styles.changeImageText}>{t("create.changeImageButton")}</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.inputSection}>
@@ -151,7 +154,7 @@ const CreateScreen = () => {
                 />
                 <TextInput
                   style={styles.captionInput}
-                  placeholder="Write a caption..."
+                  placeholder={t("create.captionPlaceholder")}
                   placeholderTextColor={colors.grey}
                   multiline
                   value={caption}
