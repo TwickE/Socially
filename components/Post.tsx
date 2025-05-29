@@ -8,9 +8,11 @@ import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { formatDistanceToNow } from 'date-fns';
+import { enUS, pt } from 'date-fns/locale';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 
 type PostProps = {
@@ -36,6 +38,7 @@ const Post = ({ post }: PostProps) => {
   const [showPostActionsModal, setShowPostActionsModal] = useState(false);
 
   const { user } = useUser();
+  const { t, i18n } = useTranslation("global");
 
   const currentUser = useQuery(api.users.getUserByClerkId, user ? { clerkId: user.id } : "skip");
 
@@ -60,13 +63,13 @@ const Post = ({ post }: PostProps) => {
   }
 
   const handleDelete = async () => {
-    Alert.alert('Delete Post', 'Are you sure you want to delete this post?\nThis action is irreversible', [
+    Alert.alert(t("home.post.alert.title"), t("home.post.alert.message"), [
       {
-        text: 'Cancel',
+        text: t("home.post.alert.cancelButton"),
         style: 'cancel'
       },
       {
-        text: 'Delete',
+        text: t("home.post.alert.confirmButton"),
         style: 'destructive',
         onPress: async () => {
           try {
@@ -140,7 +143,7 @@ const Post = ({ post }: PostProps) => {
       {/* POST INFO */}
       <View style={styles.postInfo}>
         <Text style={styles.likesText}>
-          {post.likes > 0 ? `${post.likes.toLocaleString()} likes` : "Be the first to like this"}
+          {t("home.post.likes", { count: post.likes })}
         </Text>
         {post.caption && (
           <View style={styles.captionContainer}>
@@ -150,11 +153,11 @@ const Post = ({ post }: PostProps) => {
         )}
         {post.comments > 0 && (
           <TouchableOpacity onPress={() => setShowComments(true)}>
-            <Text style={styles.commentsText}>{`View all ${post.comments} comments`}</Text>
+            <Text style={styles.commentsText}>{t("home.post.comments", {count: post.comments})}</Text>
           </TouchableOpacity>
         )}
         <Text style={styles.timeAgo}>
-          {formatDistanceToNow(post._creationTime, { addSuffix: true })}
+          {formatDistanceToNow(post._creationTime, { addSuffix: true, locale: i18n.language === 'pt' ? pt : enUS })}
         </Text>
       </View>
       {/* COMMENTS MODAL */}

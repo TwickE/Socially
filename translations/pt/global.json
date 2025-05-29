@@ -1,6 +1,20 @@
 {
   "home": {
-    "noPosts": "Sem publicações ainda"
+    "noPosts": "Sem publicações ainda",
+    "post": {
+      "title": "Detalhes da Publicação",
+      "alert": {
+        "title": "Apagar Publicação",
+        "message": "Tem a certeza que pretende apagar esta publicação?\nEsta ação é irreversível",
+        "cancelButton": "Cancelar",
+        "confirmButton": "Apagar"
+      },
+      "likes_zero": "Sê o primeiro a gostar disto",
+      "likes_one": "{{count}} gosto",
+      "likes_other": "{{count}} gostos",
+      "comments": "Vê {{count}} comentário",
+      "comments_other": "Vê os {{count}} comentários"
+    }
   },
   "search": {
     "noResults": "Nenhum utilizador encontrado para a pesquisa:",
