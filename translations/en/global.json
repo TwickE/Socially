@@ -17,7 +17,7 @@
     }
   },
   "search": {
-    "noResults": "No user found for:",
+    "noResults": "No user found for: {{term}}",
     "title": "Search",
     "inputPlaceholder": "Search for users"
   },
@@ -59,7 +59,7 @@
     "notification": {
       "newFollower": "Started following you",
       "newLike": "Liked your post",
-      "newComment": "Commented:"
+      "newComment": "Commented: {{comment}}"
     }
   }
 }

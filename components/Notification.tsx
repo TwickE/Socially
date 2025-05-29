@@ -76,7 +76,7 @@ const Notification = ({ notification }: NotificationProps) => {
             ) : notification.type === 'like' ? (
               t("notifications.notification.newLike")
             ) : (
-              `${t("notifications.notification.newComment")} "${notification.comment}"`
+              t("notifications.notification.newComment", {comment: notification.comment})
             )}
           </Text>
           <Text style={styles.timeAgo}>

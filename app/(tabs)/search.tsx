@@ -44,7 +44,7 @@ const Search = () => {
     }
 
     if (searchResults && searchResults.length === 0 && debouncedSearchTerm.length >= 2) {
-      return <Text style={styles.infoText}>{`${t("search.noResults")} ${debouncedSearchTerm}`}</Text>;
+      return <Text style={styles.infoText}>{t("search.noResults", {term: debouncedSearchTerm})}</Text>;
     }
 
     if (searchResults && searchResults.length > 0) {

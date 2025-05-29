@@ -17,7 +17,7 @@
     }
   },
   "search": {
-    "noResults": "Nenhum utilizador encontrado para a pesquisa:",
+    "noResults": "Nenhum utilizador encontrado para a pesquisa: {{term}}",
     "title": "Procurar",
     "inputPlaceholder": "Pesquisar utilizadores"
   },
@@ -59,7 +59,7 @@
     "notification": {
       "newFollower": "Começou a seguir-te",
       "newLike": "Gostou da tua publicação",
-      "newComment": "Comentou:"
+      "newComment": "Comentou: {{comment}}"
     }
   }
 }
