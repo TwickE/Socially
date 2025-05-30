@@ -2,14 +2,14 @@ import Loader from '@/components/Loader';
 import SettingsModal from '@/components/SettingsModal';
 import { useModalOverlay } from '@/context/ModalOverlayContext';
 import { api } from '@/convex/_generated/api';
-import { styles } from '@/styles/profile.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/profile.styles';
 import { useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Keyboard, KeyboardAvoidingView, Modal, Platform, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 
@@ -21,6 +21,8 @@ const Profile = () => {
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
   const router = useRouter();
   const { t } = useTranslation("global");
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const [editedProfile, setEditedProfile] = useState({
     fullname: currentUser?.fullname || '',
@@ -43,7 +45,7 @@ const Profile = () => {
       bio: currentUser?.bio || '',
     });
   }
-  
+
   useEffect(() => {
     if (isEditModalVisible || isSettingsModalVisible) {
       requestShowOverlay();
@@ -64,11 +66,11 @@ const Profile = () => {
         {/* HEADER */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color={colors.white} />
+            <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{t("profile.loadingTitle")}</Text>
           <TouchableOpacity style={styles.headerIcon} onPress={() => signOut()}>
-            <Ionicons name="log-out-outline" size={24} color={colors.white} />
+            <Ionicons name="log-out-outline" size={24} color={colors.text} />
           </TouchableOpacity>
         </View>
         {/* LOADER */}
@@ -82,11 +84,11 @@ const Profile = () => {
       {/* HEADER */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={colors.white} />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{currentUser.username}</Text>
         <TouchableOpacity style={styles.headerIcon} onPress={() => setIsSettingsModalVisible(true)}>
-          <Ionicons name="settings-outline" size={24} color={colors.white} />
+          <Ionicons name="settings-outline" size={24} color={colors.text} />
         </TouchableOpacity>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -126,7 +128,7 @@ const Profile = () => {
               <Text style={styles.editButtonText}>{t("profile.editProfile")}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.shareButton}>
-              <Ionicons name="share-outline" size={20} color={colors.white} />
+              <Ionicons name="share-outline" size={20} color={colors.text} />
             </TouchableOpacity>
           </View>
         </View>
@@ -166,7 +168,7 @@ const Profile = () => {
               <View style={styles.modalHeader}>
                 <Text style={styles.modalTitle}>{t("profile.editModal.title")}</Text>
                 <TouchableOpacity onPress={handleCloseEditModal}>
-                  <Ionicons name="close" size={24} color={colors.white} />
+                  <Ionicons name="close" size={24} color={colors.text} />
                 </TouchableOpacity>
               </View>
               <View style={styles.inputContainer}>
@@ -209,6 +211,7 @@ export default Profile
 
 function NoPostsFound() {
   const { t } = useTranslation("global");
+  const colors = useAppThemeColors();
 
   return (
     <View style={{
@@ -218,7 +221,7 @@ function NoPostsFound() {
       alignItems: 'center',
     }}>
       <Ionicons name="image-outline" size={48} color={colors.primary} />
-      <Text style={{ fontSize: 20, color: colors.white }}>{t("home.noPosts")}</Text>
+      <Text style={{ fontSize: 20, color: colors.text }}>{t("home.noPosts")}</Text>
     </View>
   )
 }

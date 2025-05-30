@@ -1,6 +1,6 @@
 import { api } from '@/convex/_generated/api';
-import { styles } from '@/styles/create.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/create.styles';
 import { useUser } from '@clerk/clerk-react';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation } from 'convex/react';
@@ -8,13 +8,15 @@ import * as FileSystem from 'expo-file-system';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const CreateScreen = () => {
   const router = useRouter();
   const { user } = useUser();
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const [caption, setCaption] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -75,7 +77,7 @@ const CreateScreen = () => {
         {/* HEADER */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color={colors.white} />
+            <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{t("create.title")}</Text>
           <View style={{ width: 24 }} />
@@ -105,7 +107,7 @@ const CreateScreen = () => {
             }}
             disabled={isSharing}
           >
-            <Ionicons name="close-outline" size={24} color={isSharing ? colors.grey : colors.white} />
+            <Ionicons name="close-outline" size={24} color={isSharing ? colors.grey : colors.text} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{t("create.title")}</Text>
           <TouchableOpacity
@@ -140,7 +142,7 @@ const CreateScreen = () => {
                 onPress={pickImage}
                 disabled={isSharing}
               >
-                <Ionicons name="image-outline" size={20} color={colors.white} />
+                <Ionicons name="image-outline" size={20} color={colors.text} />
                 <Text style={styles.changeImageText}>{t("create.changeImageButton")}</Text>
               </TouchableOpacity>
             </View>

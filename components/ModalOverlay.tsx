@@ -1,5 +1,5 @@
 import { useModalOverlay } from '@/context/ModalOverlayContext';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { BlurView } from 'expo-blur';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet } from 'react-native';
@@ -8,6 +8,7 @@ const ModalOverlay = () => {
   const { isOverlayVisible } = useModalOverlay();
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const [shouldRender, setShouldRender] = useState(false);
+  const colors = useAppThemeColors();
 
   useEffect(() => {
     if (isOverlayVisible) {

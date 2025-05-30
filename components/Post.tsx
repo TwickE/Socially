@@ -2,8 +2,8 @@ import CommentsModal from '@/components/CommentsModal';
 import PostActionsModal from '@/components/PostActionsModal';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
-import { styles } from '@/styles/feed.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/feed.styles';
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
@@ -11,7 +11,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { enUS, pt } from 'date-fns/locale';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 
@@ -36,6 +36,8 @@ type PostProps = {
 const Post = ({ post }: PostProps) => {
   const [showComments, setShowComments] = useState(false);
   const [showPostActionsModal, setShowPostActionsModal] = useState(false);
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const { user } = useUser();
   const { t, i18n } = useTranslation("global");
@@ -107,7 +109,7 @@ const Post = ({ post }: PostProps) => {
         </Link>
         {/* POST ACTIONS MODAL TRIGGER */}
         <TouchableOpacity onPress={handleShowActionsModal}>
-          <Ionicons name="ellipsis-horizontal" size={20} color={colors.white} />
+          <Ionicons name="ellipsis-horizontal" size={20} color={colors.text} />
         </TouchableOpacity>
       </View>
       {/* POST IMAGE */}
@@ -125,18 +127,18 @@ const Post = ({ post }: PostProps) => {
             <Ionicons
               name={post.isLiked ? "heart" : "heart-outline"}
               size={24}
-              color={post.isLiked ? colors.red : colors.white}
+              color={post.isLiked ? colors.red : colors.text}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShowComments(true)}>
-            <Ionicons name="chatbubble-outline" size={22} color={colors.white} />
+            <Ionicons name="chatbubble-outline" size={22} color={colors.text} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={handleBookmark}>
           <Ionicons
             name={post.isBookmarked ? "bookmark" : "bookmark-outline"}
             size={22}
-            color={colors.white}
+            color={colors.text}
           />
         </TouchableOpacity>
       </View>

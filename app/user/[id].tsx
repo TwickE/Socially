@@ -1,12 +1,13 @@
 import Loader from '@/components/Loader';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
-import { styles } from '@/styles/profile.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/profile.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
@@ -14,6 +15,8 @@ const UserProfileScreen = () => {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const { t } = useTranslation("global");
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const profile = useQuery(api.users.getUserProfile, { id: id as Id<"users"> });
   const posts = useQuery(api.posts.getPostsByUser, { userId: id as Id<"users"> });
@@ -35,7 +38,7 @@ const UserProfileScreen = () => {
         {/* HEADER */}
         <View style={styles.header}>
           <TouchableOpacity onPress={handleBack}>
-            <Ionicons name="arrow-back" size={24} color={colors.white} />
+            <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{t("profile.userLoadingTitle")}</Text>
           <View style={{ width: 24 }} />
@@ -51,7 +54,7 @@ const UserProfileScreen = () => {
       {/* HEADER */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack}>
-          <Ionicons name="arrow-back" size={24} color={colors.white} />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{profile.username}</Text>
         <View style={{ width: 24 }} />

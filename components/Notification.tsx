@@ -1,11 +1,12 @@
 import { Id } from '@/convex/_generated/dataModel';
-import { styles } from '@/styles/notifications.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/notifications.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { formatDistanceToNow } from 'date-fns';
 import { enUS, pt } from 'date-fns/locale';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -39,6 +40,8 @@ type NotificationProps = {
 
 const Notification = ({ notification }: NotificationProps) => {
   const { t, i18n } = useTranslation("global");
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.notificationItem}>

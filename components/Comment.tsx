@@ -1,6 +1,8 @@
-import { styles } from '@/styles/feed.styles';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/feed.styles';
 import { formatDistanceToNow } from 'date-fns';
 import { enUS, pt } from 'date-fns/locale';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Text, View } from 'react-native';
 
@@ -15,6 +17,8 @@ interface CommentProps {
 
 const Comment = ({ comment }: { comment: CommentProps }) => {
   const { i18n } = useTranslation("global");
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.commentContainer}>

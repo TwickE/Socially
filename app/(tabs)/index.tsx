@@ -2,20 +2,22 @@ import Loader from "@/components/Loader";
 import Post from "@/components/Post";
 import StoriesSection from "@/components/Stories";
 import { api } from "@/convex/_generated/api";
-import { styles } from "@/styles/feed.styles";
-import { colors } from "@/styles/theme";
+import { useAppThemeColors } from "@/hooks/useAppThemeColors";
+import { createStyles } from "@/styles/feed.styles";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { Link } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   const { signOut } = useAuth();
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const posts = useQuery(api.posts.getFeedPosts, { _trigger: refreshKey });
 
@@ -38,11 +40,11 @@ export default function Index() {
         <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
           <Link href="/notifications" asChild>
             <TouchableOpacity >
-              <Ionicons name="notifications-outline" size={24} color={colors.white} />
+              <Ionicons name="notifications-outline" size={24} color={colors.text} />
             </TouchableOpacity>
           </Link>
           <TouchableOpacity onPress={() => signOut()}>
-            <Ionicons name="log-out-outline" size={24} color={colors.white} />
+            <Ionicons name="log-out-outline" size={24} color={colors.text} />
           </TouchableOpacity>
         </View>
       </View>
@@ -74,6 +76,7 @@ export default function Index() {
 
 const NoPostsFound = () => {
   const { t } = useTranslation("global");
+  const colors = useAppThemeColors();
 
   return (
     <View style={{
@@ -83,7 +86,7 @@ const NoPostsFound = () => {
       alignItems: "center",
     }}>
       <Ionicons name="images-outline" size={50} color={colors.primary} />
-      <Text style={{ fontSize: 20, color: colors.white }}>{t("home.noPosts")}</Text>
+      <Text style={{ fontSize: 20, color: colors.text }}>{t("home.noPosts")}</Text>
     </View>
   )
 }

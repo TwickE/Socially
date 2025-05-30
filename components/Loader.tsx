@@ -1,7 +1,9 @@
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { ActivityIndicator, View } from 'react-native';
 
 const Loader = () => {
+  const colors = useAppThemeColors();
+  
   return (
     <View style={{
       flex: 1,

@@ -1,8 +1,8 @@
 import { useModalOverlay } from '@/context/ModalOverlayContext';
-import { styles } from '@/styles/feed.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/feed.styles';
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
 
@@ -31,6 +31,8 @@ const PostActionsModal = ({
 }: PostActionsModalProps) => {
   const { requestShowOverlay, requestHideOverlay } = useModalOverlay();
   const { t } = useTranslation("global");
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   useEffect(() => {
     if (visible) {
@@ -59,7 +61,7 @@ const PostActionsModal = ({
           <View style={styles.postModalHeader}>
             <Text style={styles.postModalTitle}>{t("home.post.postActionsModal.title")}</Text>
             <TouchableOpacity onPress={onClose}>
-              <Ionicons name="close" size={32} color={colors.white} />
+              <Ionicons name="close" size={32} color={colors.text} />
             </TouchableOpacity>
           </View>
           <View style={styles.postModalActions}>
@@ -68,7 +70,7 @@ const PostActionsModal = ({
               <Ionicons
                 name={isBookmarked ? "bookmark" : "bookmark-outline"}
                 size={28}
-                color={colors.white}
+                color={colors.text}
               />
               <Text style={styles.postModalText}>{t("home.post.postActionsModal.bookmark", { context: String(isBookmarked) })}</Text>
             </TouchableOpacity>
@@ -76,12 +78,12 @@ const PostActionsModal = ({
               <Ionicons
                 name={isLiked ? "heart" : "heart-outline"}
                 size={28}
-                color={isLiked ? colors.red : colors.white}
+                color={isLiked ? colors.red : colors.text}
               />
               <Text style={styles.postModalText}>{t("home.post.postActionsModal.like", { context: String(isLiked) })}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={onViewComments} style={styles.postModalAction}>
-              <Ionicons name="chatbubble-outline" size={28} color={colors.white} />
+              <Ionicons name="chatbubble-outline" size={28} color={colors.text} />
               <Text style={styles.postModalText}>{t("home.post.postActionsModal.comments")}</Text>
             </TouchableOpacity>
             {isOwner && (

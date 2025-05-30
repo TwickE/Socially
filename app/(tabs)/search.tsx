@@ -1,13 +1,13 @@
 import Loader from '@/components/Loader';
 import { api } from '@/convex/_generated/api';
 import { Doc } from '@/convex/_generated/dataModel';
-import { styles } from '@/styles/search.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/search.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -15,6 +15,8 @@ const Search = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const { t } = useTranslation("global");
 
@@ -44,7 +46,7 @@ const Search = () => {
     }
 
     if (searchResults && searchResults.length === 0 && debouncedSearchTerm.length >= 2) {
-      return <Text style={styles.infoText}>{t("search.noResults", {term: debouncedSearchTerm})}</Text>;
+      return <Text style={styles.infoText}>{t("search.noResults", { term: debouncedSearchTerm })}</Text>;
     }
 
     if (searchResults && searchResults.length > 0) {
@@ -67,7 +69,7 @@ const Search = () => {
       {/* HEADER */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={colors.white} />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{t("search.title")}</Text>
         <View style={{ width: 24 }} />
@@ -86,7 +88,7 @@ const Search = () => {
             onChangeText={setSearchTerm}
           />
           <TouchableOpacity style={searchTerm === "" ? styles.hidden : ""} onPress={handleClearSearch}>
-            <Ionicons name='close-circle-outline' size={24} color={colors.white} />
+            <Ionicons name='close-circle-outline' size={24} color={colors.text} />
           </TouchableOpacity>
         </View>
         {/* SEARCH RESULTS */}
@@ -101,6 +103,9 @@ const Search = () => {
 export default Search
 
 function UserListItem({ user }: { user: Doc<"users">; }) {
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <Link href={`/user/${user._id}`} asChild>
       <TouchableOpacity style={styles.itemContainer}>

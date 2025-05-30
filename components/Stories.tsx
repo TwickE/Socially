@@ -1,9 +1,14 @@
 import Story from "@/components/Story";
 import { stories } from "@/constants/mock-data";
-import { styles } from "@/styles/feed.styles";
+import { useAppThemeColors } from "@/hooks/useAppThemeColors";
+import { createStyles } from "@/styles/feed.styles";
+import { useMemo } from "react";
 import { ScrollView } from "react-native";
 
 const StoriesSection = () => {
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <ScrollView
       horizontal

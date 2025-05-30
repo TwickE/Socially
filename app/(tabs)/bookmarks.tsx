@@ -1,11 +1,12 @@
 import Loader from '@/components/Loader';
 import { api } from '@/convex/_generated/api';
-import { styles } from '@/styles/bookmarks.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/bookmarks.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
@@ -13,13 +14,15 @@ const Bookmarks = () => {
   const bookmarkedPosts = useQuery(api.bookmarks.getBookmarkedPosts);
   const router = useRouter();
   const { t } = useTranslation("global");
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.container}>
       {/* HEADER */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={colors.white} />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{t("bookmarks.title")}</Text>
         <View style={{ width: 24 }} />
@@ -59,6 +62,7 @@ export default Bookmarks
 
 function NoBookmarksFound() {
   const { t } = useTranslation("global");
+  const colors = useAppThemeColors();
   
   return (
     <View
@@ -70,7 +74,7 @@ function NoBookmarksFound() {
       }}
     >
       <Ionicons name="bookmark-outline" size={48} color={colors.primary} />
-      <Text style={{ fontSize: 20, color: colors.white }}>{t("bookmarks.noBookmarks")}</Text>
+      <Text style={{ fontSize: 20, color: colors.text }}>{t("bookmarks.noBookmarks")}</Text>
     </View>
   )
 }

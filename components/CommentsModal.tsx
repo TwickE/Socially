@@ -2,11 +2,11 @@ import Comment from '@/components/Comment';
 import Loader from '@/components/Loader';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
-import { styles } from '@/styles/feed.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/feed.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, KeyboardAvoidingView, Modal, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -21,6 +21,8 @@ const CommentsModal = ({ onClose, postId, visible }: CommentsModalProps) => {
   const comments = useQuery(api.comments.getComments, { postId });
   const addComment = useMutation(api.comments.addComment);
   const { t } = useTranslation("global");
+  const colors = useAppThemeColors();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
@@ -48,7 +50,7 @@ const CommentsModal = ({ onClose, postId, visible }: CommentsModalProps) => {
         {/* HEADER */}
         <View style={styles.modalHeader}>
           <TouchableOpacity onPress={onClose}>
-            <Ionicons name="close" size={24} color={colors.white} />
+            <Ionicons name="close" size={24} color={colors.text} />
           </TouchableOpacity>
           <Text style={styles.modalTitle}>{t("home.post.commentsModal.title")}</Text>
           <View style={{ width: 24 }} />

@@ -1,13 +1,16 @@
-import { styles } from '@/styles/auth.styles';
-import { colors } from '@/styles/theme';
+import { useAppThemeColors } from '@/hooks/useAppThemeColors';
+import { createStyles } from '@/styles/auth.styles';
 import { useSSO } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useMemo } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 const Login = () => {
+  const colors = useAppThemeColors();
   const { startSSOFlow } = useSSO();
   const router = useRouter();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const handleGoogleSignIn = async () => {
     try {
