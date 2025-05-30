@@ -9,6 +9,7 @@ export const darkThemeColors = {
   grey: '#9ca3af',
   red: '#ff0000',
   modalOverlay: 'rgba(0, 0, 0, 0.5)',
+  changeImageButton: "rgba(0, 0, 0, 0.75)"
 } as const;
 
 export const lightThemeColors = {
@@ -22,6 +23,7 @@ export const lightThemeColors = {
   grey: '#6e737a',
   red: '#ff0000',
   modalOverlay: 'rgba(0, 0, 0, 0.5)',
+  changeImageButton: "rgba(255, 255, 255, 0.75)"
 } as const;
 
 export type AppThemeColors = typeof darkThemeColors | typeof lightThemeColors;

@@ -74,7 +74,7 @@ export const createStyles = (colors: AppThemeColors) => {
       position: "absolute",
       bottom: 16,
       right: 16,
-      backgroundColor: "rgba(0, 0, 0, 0.75)",
+      backgroundColor: colors.changeImageButton,
       flexDirection: "row",
       alignItems: "center",
       padding: 8,

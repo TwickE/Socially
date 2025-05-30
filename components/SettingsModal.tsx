@@ -4,7 +4,7 @@ import { ThemeContext } from '@/context/ThemeContext';
 import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { createStyles } from '@/styles/profile.styles';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Switch, Text, TouchableOpacity, View } from 'react-native';
 
@@ -37,7 +37,6 @@ const SettingsModal = ({
 
   const colors = useAppThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const [systemModeSwitch, setSystemModeSwitch] = useState(false);
   const { currentTheme, toggleTheme, setSystemTheme, isSystemTheme } = useContext(ThemeContext);
 
   return (

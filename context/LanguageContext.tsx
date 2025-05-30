@@ -37,8 +37,6 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
       await AsyncStorage.setItem('language', lang);
       setCurrentLanguage(lang);
       i18n.changeLanguage(lang);
-
-      console.log("Language changed to:", lang);
     } catch (error) {
       console.error('Failed to save language preference:', error);
     }
