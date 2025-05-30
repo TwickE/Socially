@@ -30,7 +30,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     };
 
     loadSavedLanguage();
-  }, []);
+  }, [i18n]);
 
   const changeLanguage = async (lang: string) => {
     try {
