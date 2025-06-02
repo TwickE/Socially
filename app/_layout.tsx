@@ -7,6 +7,7 @@ import { useAppThemeColors } from "@/hooks/useAppThemeColors";
 import ClerkAndConvexProvider from "@/providers/ClerkAndConvexProvider";
 import global_en from "@/translations/en/global.json";
 import global_pt from "@/translations/pt/global.json";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useFonts } from "expo-font";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SplashScreen from "expo-splash-screen";
@@ -15,6 +16,7 @@ import i18next from "i18next";
 import { useCallback, useContext, useEffect } from "react";
 import { I18nextProvider } from 'react-i18next';
 import { Platform } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 SplashScreen.preventAutoHideAsync();
@@ -75,18 +77,22 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProviderFromContext>
-      <ClerkAndConvexProvider>
-        <I18nextProvider i18n={i18next}>
-          <LanguageProvider>
-            <ModalOverlayProvider>
-              <SafeAreaProvider>
-                <AppContent />
-              </SafeAreaProvider>
-            </ModalOverlayProvider>
-          </LanguageProvider>
-        </I18nextProvider>
-      </ClerkAndConvexProvider>
-    </ThemeProviderFromContext>
+    <GestureHandlerRootView>
+      <BottomSheetModalProvider>
+        <ThemeProviderFromContext>
+          <ClerkAndConvexProvider>
+            <I18nextProvider i18n={i18next}>
+              <LanguageProvider>
+                <ModalOverlayProvider>
+                  <SafeAreaProvider>
+                    <AppContent />
+                  </SafeAreaProvider>
+                </ModalOverlayProvider>
+              </LanguageProvider>
+            </I18nextProvider>
+          </ClerkAndConvexProvider>
+        </ThemeProviderFromContext>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   )
 }

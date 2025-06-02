@@ -106,23 +106,12 @@ export const createStyles = (colors: AppThemeColors) => {
       flex: 1,
       justifyContent: "flex-end",
     },
-    modalContent: {
-      backgroundColor: colors.surface,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      padding: 20,
-      minHeight: 400,
-    },
-    modalHeader: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 20,
-    },
     modalTitle: {
       color: colors.text,
       fontSize: 18,
       fontWeight: "600",
+      marginHorizontal: 'auto',
+      marginVertical: 16,
     },
     inputContainer: {
       marginBottom: 20,
@@ -151,7 +140,7 @@ export const createStyles = (colors: AppThemeColors) => {
       marginTop: 20,
     },
     saveButtonText: {
-      color: colors.background,
+      color: "white",
       fontSize: 16,
       fontWeight: "600",
     },
@@ -225,27 +214,12 @@ export const createStyles = (colors: AppThemeColors) => {
       fontWeight: "600",
       color: colors.text,
     },
-    settingsModalContainer: {
-      flex: 1,
-      justifyContent: "flex-end",
-    },
-    settingsModalContent: {
-      backgroundColor: colors.surface,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      padding: 20,
-      minHeight: 500,
-    },
-    settingsModalHeader: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 20,
-    },
     settingsModalTitle: {
       color: colors.text,
       fontSize: 18,
       fontWeight: "600",
+      marginHorizontal: 'auto',
+      marginVertical: 16,
     },
     settingsModalAction: {
       flexDirection: "row",

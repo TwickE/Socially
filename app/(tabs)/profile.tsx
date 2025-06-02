@@ -1,64 +1,38 @@
+import EditedProfileModal from '@/components/EditProfileModal';
 import Loader from '@/components/Loader';
-import SettingsModal from '@/components/SettingsModal';
-import { useModalOverlay } from '@/context/ModalOverlayContext';
+import SettingsModalV2 from '@/components/SettingsModalV2';
 import { api } from '@/convex/_generated/api';
 import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { createStyles } from '@/styles/profile.styles';
 import { useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { useMutation, useQuery } from 'convex/react';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Keyboard, KeyboardAvoidingView, Modal, Platform, ScrollView, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 const Profile = () => {
-  const { signOut, userId } = useAuth();
-  const { requestShowOverlay, requestHideOverlay } = useModalOverlay();
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
+  const { userId } = useAuth();
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
   const router = useRouter();
+
   const { t } = useTranslation("global");
   const colors = useAppThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
-  const [editedProfile, setEditedProfile] = useState({
-    fullname: currentUser?.fullname || '',
-    bio: currentUser?.bio || '',
-  });
-
   const posts = useQuery(api.posts.getPostsByUser, {});
 
-  const updateProfile = useMutation(api.users.updateProfile);
-
-  const handleSaveProfile = async () => {
-    await updateProfile(editedProfile);
-    setIsEditModalVisible(false);
+  const settingsModalV2 = useRef<BottomSheetModal>(null);
+  const handleOpenSettingsModalV2 = () => {
+    settingsModalV2.current?.present();
   }
-
-  const handleCloseEditModal = () => {
-    setIsEditModalVisible(false);
-    setEditedProfile({
-      fullname: currentUser?.fullname || '',
-      bio: currentUser?.bio || '',
-    });
+  const editProfileModal = useRef<BottomSheetModal>(null);
+  const handleOpenEditProfileModal = () => {
+    editProfileModal.current?.present();
   }
-
-  useEffect(() => {
-    if (isEditModalVisible || isSettingsModalVisible) {
-      requestShowOverlay();
-    } else {
-      requestHideOverlay();
-    }
-
-    return () => {
-      if (isEditModalVisible || isSettingsModalVisible) {
-        requestHideOverlay();
-      }
-    }
-  }, [isEditModalVisible, isSettingsModalVisible, requestShowOverlay, requestHideOverlay]);
 
   if (!currentUser || posts === undefined) {
     return (
@@ -69,8 +43,8 @@ const Profile = () => {
             <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{t("profile.loadingTitle")}</Text>
-          <TouchableOpacity style={styles.headerIcon} onPress={() => signOut()}>
-            <Ionicons name="log-out-outline" size={24} color={colors.text} />
+          <TouchableOpacity style={styles.headerIcon} onPress={handleOpenSettingsModalV2}>
+            <Ionicons name="settings-outline" size={24} color={colors.text} />
           </TouchableOpacity>
         </View>
         {/* LOADER */}
@@ -87,7 +61,7 @@ const Profile = () => {
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{currentUser.username}</Text>
-        <TouchableOpacity style={styles.headerIcon} onPress={() => setIsSettingsModalVisible(true)}>
+        <TouchableOpacity style={styles.headerIcon} onPress={handleOpenSettingsModalV2}>
           <Ionicons name="settings-outline" size={24} color={colors.text} />
         </TouchableOpacity>
       </View>
@@ -124,7 +98,7 @@ const Profile = () => {
           {currentUser.bio && <Text style={styles.bio}>{currentUser.bio}</Text>}
           {/* EDIT PROFILE BUTTON */}
           <View style={styles.actionButtons}>
-            <TouchableOpacity style={styles.editButton} onPress={() => setIsEditModalVisible(true)}>
+            <TouchableOpacity style={styles.editButton} onPress={handleOpenEditProfileModal}>
               <Text style={styles.editButtonText}>{t("profile.editProfile")}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.shareButton}>
@@ -153,56 +127,9 @@ const Profile = () => {
         />
       </ScrollView>
       {/* EDIT PROFILE MODAL */}
-      <Modal
-        visible={isEditModalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={handleCloseEditModal}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <KeyboardAvoidingView
-            style={styles.modalContainer}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          >
-            <View style={styles.modalContent}>
-              <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>{t("profile.editModal.title")}</Text>
-                <TouchableOpacity onPress={handleCloseEditModal}>
-                  <Ionicons name="close" size={24} color={colors.text} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>{t("profile.editModal.name")}</Text>
-                <TextInput
-                  style={styles.input}
-                  value={editedProfile.fullname}
-                  onChangeText={(text) => setEditedProfile((prev) => ({ ...prev, fullname: text }))}
-                  placeholderTextColor={colors.grey}
-                />
-              </View>
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>{t("profile.editModal.bio")}</Text>
-                <TextInput
-                  style={[styles.input, styles.bioInput]}
-                  value={editedProfile.bio}
-                  onChangeText={(text) => setEditedProfile((prev) => ({ ...prev, bio: text }))}
-                  multiline
-                  numberOfLines={4}
-                  placeholderTextColor={colors.grey}
-                />
-              </View>
-              <TouchableOpacity style={styles.saveButton} onPress={handleSaveProfile}>
-                <Text style={styles.saveButtonText}>{t("profile.editModal.saveChanges")}</Text>
-              </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
-      </Modal>
+      <EditedProfileModal ref={editProfileModal} />
       {/* SETTINGS MODAL */}
-      <SettingsModal
-        visible={isSettingsModalVisible}
-        onClose={() => setIsSettingsModalVisible(false)}
-      />
+      <SettingsModalV2 ref={settingsModalV2} />
     </View>
   )
 }
