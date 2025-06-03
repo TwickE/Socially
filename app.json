@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Socially",
-    "slug": "Socially",
+    "slug": "socially",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -47,6 +47,19 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8a1087b3-2a31-4cfd-9db1-40bd17d323c8"
+      }
+    },
+    "owner": "twicke",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/8a1087b3-2a31-4cfd-9db1-40bd17d323c8"
     }
   }
 }

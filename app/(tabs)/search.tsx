@@ -3,6 +3,7 @@ import { api } from '@/convex/_generated/api';
 import { Doc } from '@/convex/_generated/dataModel';
 import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { createStyles } from '@/styles/search.styles';
+import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
@@ -17,6 +18,9 @@ const Search = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const colors = useAppThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
+
+  const { user } = useUser();
+  const currentUser = useQuery(api.users.getUserByClerkId, user ? { clerkId: user.id } : "skip");
 
   const { t } = useTranslation("global");
 
@@ -53,7 +57,7 @@ const Search = () => {
       return (
         <FlatList
           data={searchResults}
-          renderItem={({ item }) => <UserListItem user={item} />}
+          renderItem={({ item }) => <UserListItem user={item} currentUser={currentUser} />}
           keyExtractor={(item) => item._id.toString()}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
@@ -102,12 +106,12 @@ const Search = () => {
 
 export default Search
 
-function UserListItem({ user }: { user: Doc<"users">; }) {
+function UserListItem({ user, currentUser }: { user: Doc<"users">; currentUser?: Doc<"users"> }) {
   const colors = useAppThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <Link href={`/user/${user._id}`} asChild>
+    <Link href={currentUser?._id === user._id ? '/(tabs)/profile' : `/user/${user._id}`} asChild>
       <TouchableOpacity style={styles.itemContainer}>
         <Image
           source={{ uri: user.image }}
