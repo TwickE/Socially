@@ -1,7 +1,5 @@
 import InitialLayout from "@/components/initialLayout";
-import ModalOverlay from "@/components/ModalOverlay";
 import { LanguageProvider } from "@/context/LanguageContext";
-import { ModalOverlayProvider } from "@/context/ModalOverlayContext";
 import ThemeProviderFromContext, { ThemeContext } from "@/context/ThemeContext";
 import { useAppThemeColors } from "@/hooks/useAppThemeColors";
 import ClerkAndConvexProvider from "@/providers/ClerkAndConvexProvider";
@@ -54,7 +52,6 @@ const AppContent = () => {
     <>
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} onLayout={onLayoutRootView}>
         <InitialLayout />
-        <ModalOverlay />
       </SafeAreaView>
       <StatusBar style={currentTheme === 'dark' ? 'light' : 'dark'} />
     </>
@@ -83,11 +80,9 @@ export default function RootLayout() {
           <ClerkAndConvexProvider>
             <I18nextProvider i18n={i18next}>
               <LanguageProvider>
-                <ModalOverlayProvider>
-                  <SafeAreaProvider>
-                    <AppContent />
-                  </SafeAreaProvider>
-                </ModalOverlayProvider>
+                <SafeAreaProvider>
+                  <AppContent />
+                </SafeAreaProvider>
               </LanguageProvider>
             </I18nextProvider>
           </ClerkAndConvexProvider>

@@ -6,12 +6,13 @@ import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { createStyles } from '@/styles/feed.styles';
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useMutation, useQuery } from 'convex/react';
 import { formatDistanceToNow } from 'date-fns';
 import { enUS, pt } from 'date-fns/locale';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 
@@ -35,7 +36,6 @@ type PostProps = {
 
 const Post = ({ post }: PostProps) => {
   const [showComments, setShowComments] = useState(false);
-  const [showPostActionsModal, setShowPostActionsModal] = useState(false);
   const colors = useAppThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -84,8 +84,9 @@ const Post = ({ post }: PostProps) => {
     ]);
   }
 
-  const handleShowActionsModal = () => {
-    setShowPostActionsModal(true);
+  const postActionsModal = useRef<BottomSheetModal>(null);
+  const handleOpenPostActionsModal = () => {
+    postActionsModal.current?.present();
   }
 
   return (
@@ -108,7 +109,7 @@ const Post = ({ post }: PostProps) => {
           </TouchableOpacity>
         </Link>
         {/* POST ACTIONS MODAL TRIGGER */}
-        <TouchableOpacity onPress={handleShowActionsModal}>
+        <TouchableOpacity onPress={handleOpenPostActionsModal}>
           <Ionicons name="ellipsis-horizontal" size={20} color={colors.text} />
         </TouchableOpacity>
       </View>
@@ -170,21 +171,20 @@ const Post = ({ post }: PostProps) => {
       />
       {/* POST ACTIONS MODAL */}
       <PostActionsModal
-        visible={showPostActionsModal}
-        onClose={() => setShowPostActionsModal(false)}
         isLiked={post.isLiked}
         onToggleLike={handleLike}
         isBookmarked={post.isBookmarked}
         onToggleBookmark={handleBookmark}
         onViewComments={() => {
-          setShowPostActionsModal(false);
+          postActionsModal.current?.dismiss();
           setShowComments(true);
         }}
         onDeletePost={() => {
-          setShowPostActionsModal(false);
+          postActionsModal.current?.dismiss();
           handleDelete();
         }}
         isOwner={post.author._id === currentUser?._id}
+        ref={postActionsModal}
       />
     </View>
   )

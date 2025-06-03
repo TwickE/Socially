@@ -1,14 +1,12 @@
-import { useModalOverlay } from '@/context/ModalOverlayContext';
 import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { createStyles } from '@/styles/feed.styles';
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useMemo } from 'react';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
 type PostActionsModalProps = {
-  visible: boolean;
-  onClose: () => void;
   isLiked: boolean;
   onToggleLike: () => void;
   isBookmarked: boolean;
@@ -16,56 +14,47 @@ type PostActionsModalProps = {
   onViewComments: () => void;
   onDeletePost: () => void | undefined;
   isOwner: boolean;
+  ref: any;
 }
 
 const PostActionsModal = ({
-  visible,
-  onClose,
   isLiked,
   onToggleLike,
   isBookmarked,
   onToggleBookmark,
   onViewComments,
   onDeletePost,
-  isOwner
+  isOwner,
+  ref
 }: PostActionsModalProps) => {
-  const { requestShowOverlay, requestHideOverlay } = useModalOverlay();
+  const snapPoints = useMemo(() => ['35%'], []);
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />
+    ),
+    []
+  );
+
   const { t } = useTranslation("global");
   const colors = useAppThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
-  useEffect(() => {
-    if (visible) {
-      requestShowOverlay();
-    } else {
-      requestHideOverlay();
-    }
-
-    return () => {
-      if (visible) {
-        requestHideOverlay();
-      }
-    }
-  }, [visible, requestShowOverlay, requestHideOverlay]);
-
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-      animationType="slide"
-      onRequestClose={onClose}
+    <BottomSheetModal
+      snapPoints={snapPoints}
+      ref={ref}
+      enablePanDownToClose={true}
+      backdropComponent={renderBackdrop}
+      enableDynamicSizing={false}
+      backgroundStyle={{ backgroundColor: colors.surface }}
+      handleIndicatorStyle={{ backgroundColor: colors.text }}
     >
-      <View style={styles.postModalContainer}>
-        <View style={styles.postModalContent}>
-          {/* HEADER */}
-          <View style={styles.postModalHeader}>
-            <Text style={styles.postModalTitle}>{t("home.post.postActionsModal.title")}</Text>
-            <TouchableOpacity onPress={onClose}>
-              <Ionicons name="close" size={32} color={colors.text} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.postModalActions}>
-            {/* Actions */}
+      <BottomSheetView style={{ paddingHorizontal: 20 }}>
+        {/* HEADER */}
+        <Text style={styles.postModalTitle}>{t("home.post.postActionsModal.title")}</Text>
+        {/* Actions */}
+        <BottomSheetView style={styles.postModalActions}>
+          <BottomSheetView style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <TouchableOpacity onPress={onToggleBookmark} style={styles.postModalAction}>
               <Ionicons
                 name={isBookmarked ? "bookmark" : "bookmark-outline"}
@@ -82,7 +71,9 @@ const PostActionsModal = ({
               />
               <Text style={styles.postModalText}>{t("home.post.postActionsModal.like", { context: String(isLiked) })}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={onViewComments} style={styles.postModalAction}>
+          </BottomSheetView>
+          <BottomSheetView style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <TouchableOpacity onPress={onViewComments} style={isOwner ? styles.postModalAction : styles.postModalActionSingle}>
               <Ionicons name="chatbubble-outline" size={28} color={colors.text} />
               <Text style={styles.postModalText}>{t("home.post.postActionsModal.comments")}</Text>
             </TouchableOpacity>
@@ -92,10 +83,10 @@ const PostActionsModal = ({
                 <Text style={styles.postModalDeleteText}>{t("home.post.postActionsModal.delete")}</Text>
               </TouchableOpacity>
             )}
-          </View>
-        </View>
-      </View>
-    </Modal>
+          </BottomSheetView>
+        </BottomSheetView>
+      </BottomSheetView>
+    </BottomSheetModal>
   )
 }
 
