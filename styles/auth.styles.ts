@@ -6,29 +6,32 @@ const { width, height } = Dimensions.get("window");
 export const createStyles = (colors: AppThemeColors) => {
   return StyleSheet.create({
     container: {
-      flex: 1,
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 16,
+      height: "100%",
       backgroundColor: colors.background,
+      paddingVertical: 16,
     },
     brandSection: {
       alignItems: "center",
-      marginTop: height * 0.12,
     },
-    logoContainer: {
-      width: 60,
-      height: 60,
-      borderRadius: 18,
-      backgroundColor: colors.primary25,
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: 20,
+    brandIcon: {
+      shadowColor: colors.primary,
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      shadowOpacity: 0.15,
+      shadowRadius: 12,
+      elevation: 5,
     },
     appName: {
       fontSize: 42,
-      fontWeight: "700",
+      fontWeight: "600",
       fontFamily: "JetBrainsMono-Medium",
       color: colors.primary,
-      letterSpacing: 0.5,
-      marginBottom: 8,
     },
     tagline: {
       fontSize: 16,
@@ -38,17 +41,15 @@ export const createStyles = (colors: AppThemeColors) => {
     illustrationContainer: {
       flex: 1,
       justifyContent: "center",
-      alignItems: "center",
-      paddingHorizontal: 40,
     },
     illustration: {
-      width: width * 0.75,
-      height: width * 0.75,
+      width: width * 0.8,
+      height: width * 0.8,
       maxHeight: 280,
     },
     loginSection: {
       width: "100%",
-      paddingHorizontal: 24,
+      paddingHorizontal: 20,
       paddingBottom: 40,
       alignItems: "center",
     },
@@ -58,8 +59,7 @@ export const createStyles = (colors: AppThemeColors) => {
       justifyContent: "center",
       backgroundColor: colors.text,
       paddingVertical: 16,
-      paddingHorizontal: 24,
-      borderRadius: 14,
+      borderRadius: 16,
       marginBottom: 20,
       width: "100%",
       maxWidth: 300,

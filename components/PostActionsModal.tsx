@@ -49,11 +49,10 @@ const PostActionsModal = ({
       backgroundStyle={{ backgroundColor: colors.surface }}
       handleIndicatorStyle={{ backgroundColor: colors.text }}
     >
-      <BottomSheetScrollView style={{ paddingHorizontal: 20, flex: 1 }} contentContainerStyle={{ gap: 8 }}>
       {/* HEADER */}
       <Text style={styles.postModalTitle}>{t("home.post.postActionsModal.title")}</Text>
       {/* Actions */}
-      
+      <BottomSheetScrollView style={{ paddingHorizontal: 20, flex: 1 }} contentContainerStyle={{ gap: 8 }}>
         <BottomSheetView style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <TouchableOpacity onPress={onToggleBookmark} style={styles.postModalAction}>
             <Ionicons

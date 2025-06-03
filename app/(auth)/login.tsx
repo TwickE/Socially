@@ -16,7 +16,7 @@ const Login = () => {
     try {
       const { createdSessionId, setActive } = await startSSOFlow({ strategy: 'oauth_google' });
 
-      if(setActive && createdSessionId) {
+      if (setActive && createdSessionId) {
         setActive({ session: createdSessionId });
         router.replace('/(tabs)');
       }
@@ -28,8 +28,12 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <View style={styles.brandSection}>
-        <View style={styles.logoContainer}>
-          <Ionicons name='leaf' size={32} color={colors.primary} />
+        <View style={styles.brandIcon}>
+          <Image
+            source={require('@/assets/images/adaptive-icon.png')}
+            style={{ width: 60, height: 60 }}
+            resizeMode='contain'
+          />
         </View>
         <Text style={styles.appName}>Socially</Text>
         <Text style={styles.tagline}>Connect with the world</Text>
@@ -38,7 +42,7 @@ const Login = () => {
         <Image
           source={require('@/assets/images/auth-illustration.png')}
           style={styles.illustration}
-          resizeMode='cover'
+          resizeMode='contain'
         />
       </View>
       <View style={styles.loginSection}>
