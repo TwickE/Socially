@@ -137,7 +137,8 @@ export const createStyles = (colors: AppThemeColors) => {
       padding: 16,
       borderRadius: 8,
       alignItems: "center",
-      marginTop: 20,
+      marginTop: 16,
+      marginBottom: 32,
     },
     saveButtonText: {
       color: "white",
@@ -178,7 +179,7 @@ export const createStyles = (colors: AppThemeColors) => {
       borderColor: colors.primary,
     },
     followButtonText: {
-      color: colors.text,
+      color: "white",
       fontSize: 14,
       fontWeight: "600",
       textAlign: "center",
@@ -252,6 +253,8 @@ export const createStyles = (colors: AppThemeColors) => {
       backgroundColor: colors.red,
       borderRadius: 8,
       padding: 16,
+      marginTop: 16,
+      marginBottom: 32,
     },
   });
 }

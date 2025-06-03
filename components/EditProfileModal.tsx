@@ -2,7 +2,7 @@ import { api } from '@/convex/_generated/api';
 import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { createStyles } from '@/styles/profile.styles';
 import { useAuth } from '@clerk/clerk-expo';
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView, BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useMutation, useQuery } from 'convex/react';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -45,8 +45,10 @@ const EditedProfileModal = ({ ref }: { ref: any }) => {
       backgroundStyle={{ backgroundColor: colors.surface }}
       handleIndicatorStyle={{ backgroundColor: colors.text }}
     >
-      <BottomSheetView style={{ paddingHorizontal: 20 }}>
-        <Text style={styles.modalTitle}>{t("profile.editModal.title")}</Text>
+      {/* HEADER */}
+      <Text style={styles.modalTitle}>{t("profile.editModal.title")}</Text>
+      <BottomSheetScrollView style={{ paddingHorizontal: 20 }}>
+        {/* NAME INPUT */}
         <BottomSheetView style={styles.inputContainer}>
           <Text style={styles.inputLabel}>{t("profile.editModal.name")}</Text>
           <BottomSheetTextInput
@@ -56,6 +58,7 @@ const EditedProfileModal = ({ ref }: { ref: any }) => {
             placeholderTextColor={colors.grey}
           />
         </BottomSheetView>
+        {/* Bio Input */}
         <BottomSheetView style={styles.inputContainer}>
           <Text style={styles.inputLabel}>{t("profile.editModal.bio")}</Text>
           <BottomSheetTextInput
@@ -67,10 +70,11 @@ const EditedProfileModal = ({ ref }: { ref: any }) => {
             placeholderTextColor={colors.grey}
           />
         </BottomSheetView>
+        {/* SAVE BUTTON */}
         <TouchableOpacity style={styles.saveButton} onPress={handleSaveProfile}>
           <Text style={styles.saveButtonText}>{t("profile.editModal.saveChanges")}</Text>
         </TouchableOpacity>
-      </BottomSheetView>
+      </BottomSheetScrollView>
     </BottomSheetModal>
   )
 }
