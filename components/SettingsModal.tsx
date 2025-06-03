@@ -2,14 +2,15 @@ import { useLanguage } from '@/context/LanguageContext';
 import { ThemeContext } from '@/context/ThemeContext';
 import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { createStyles } from '@/styles/profile.styles';
+import { useAuth } from '@clerk/clerk-expo';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { useCallback, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, Text, TouchableOpacity } from 'react-native';
 
-const SettingsModalV2 = ({ ref }: { ref: any }) => {
-  const snapPoints = useMemo(() => ['60%'], []);
+const SettingsModal = ({ ref }: { ref: any }) => {
+  const snapPoints = useMemo(() => ['70%'], []);
   const renderBackdrop = useCallback(
     (props: any) => (
       <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />
@@ -17,6 +18,7 @@ const SettingsModalV2 = ({ ref }: { ref: any }) => {
     []
   );
 
+  const { signOut } = useAuth();
   const { t, i18n } = useTranslation("global");
   const { changeLanguage } = useLanguage();
 
@@ -75,10 +77,15 @@ const SettingsModalV2 = ({ ref }: { ref: any }) => {
             </BottomSheetView>
             <Text style={{ fontSize: 16, color: colors.grey }}>{t("profile.settingsModal.themeDescription")}</Text>
           </BottomSheetView>
+          {/* LOGOUT BUTTON */}
+          <TouchableOpacity onPress={() => signOut()} style={styles.settingsModalLogoutButton}>
+            <Ionicons name="log-out-outline" size={24} color="white" />
+            <Text style={{color: "white"}}>{t("profile.settingsModal.logout")}</Text>
+          </TouchableOpacity>
         </BottomSheetView>
       </BottomSheetView>
     </BottomSheetModal>
   )
 }
 
-export default SettingsModalV2
+export default SettingsModal

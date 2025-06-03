@@ -64,7 +64,8 @@
       "theme": "Tema",
       "darkModeSwitch": "Modo Escuro",
       "systemModeSwitch": "Usar Definições do Dispositivo",
-      "themeDescription": "Defina Usar Definições do Dispositivo para usar o Modo Claro ou Escuro conforme as definições do seu dispositivo."
+      "themeDescription": "Defina Usar Definições do Dispositivo para usar o Modo Claro ou Escuro conforme as definições do seu dispositivo.",
+      "logout": "Terminar Sessão"
     },
     "userLoadingTitle": "Perfil de Utilizador",
     "followButton_true": "A Seguir",

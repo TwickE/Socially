@@ -244,5 +244,14 @@ export const createStyles = (colors: AppThemeColors) => {
       paddingHorizontal: 16,
       height: 56
     },
+    settingsModalLogoutButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+      backgroundColor: colors.red,
+      borderRadius: 8,
+      padding: 16,
+    },
   });
 }

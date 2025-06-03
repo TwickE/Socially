@@ -64,7 +64,8 @@
       "theme": "Theme",
       "darkModeSwitch": "Dark Mode",
       "systemModeSwitch": "Use Device Settings",
-      "themeDescription": "Set Use Device Settings to use the Light or Dark mode based on your device settings."
+      "themeDescription": "Set Use Device Settings to use the Light or Dark mode based on your device settings.",
+      "logout": "Logout"
     },
     "userLoadingTitle": "User Profile",
     "followButton_true": "Following",

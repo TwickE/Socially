@@ -4,7 +4,6 @@ import StoriesSection from "@/components/Stories";
 import { api } from "@/convex/_generated/api";
 import { useAppThemeColors } from "@/hooks/useAppThemeColors";
 import { createStyles } from "@/styles/feed.styles";
-import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { Link } from "expo-router";
@@ -13,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
-  const { signOut } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const colors = useAppThemeColors();
@@ -37,16 +35,11 @@ export default function Index() {
       {/* HEADER */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Socially</Text>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
-          <Link href="/notifications" asChild>
-            <TouchableOpacity >
-              <Ionicons name="notifications-outline" size={24} color={colors.text} />
-            </TouchableOpacity>
-          </Link>
-          <TouchableOpacity onPress={() => signOut()}>
-            <Ionicons name="log-out-outline" size={24} color={colors.text} />
+        <Link href="/notifications" asChild>
+          <TouchableOpacity >
+            <Ionicons name="notifications-outline" size={24} color={colors.text} />
           </TouchableOpacity>
-        </View>
+        </Link>
       </View>
       {/* STORIES & POSTS */}
       {posts === undefined ? (

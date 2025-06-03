@@ -1,6 +1,6 @@
 import EditedProfileModal from '@/components/EditProfileModal';
 import Loader from '@/components/Loader';
-import SettingsModalV2 from '@/components/SettingsModalV2';
+import SettingsModal from '@/components/SettingsModal';
 import { api } from '@/convex/_generated/api';
 import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { createStyles } from '@/styles/profile.styles';
@@ -25,9 +25,9 @@ const Profile = () => {
 
   const posts = useQuery(api.posts.getPostsByUser, {});
 
-  const settingsModalV2 = useRef<BottomSheetModal>(null);
-  const handleOpenSettingsModalV2 = () => {
-    settingsModalV2.current?.present();
+  const settingsModal = useRef<BottomSheetModal>(null);
+  const handleOpenSettingsModal = () => {
+    settingsModal.current?.present();
   }
   const editProfileModal = useRef<BottomSheetModal>(null);
   const handleOpenEditProfileModal = () => {
@@ -43,7 +43,7 @@ const Profile = () => {
             <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{t("profile.loadingTitle")}</Text>
-          <TouchableOpacity style={styles.headerIcon} onPress={handleOpenSettingsModalV2}>
+          <TouchableOpacity style={styles.headerIcon} onPress={handleOpenSettingsModal}>
             <Ionicons name="settings-outline" size={24} color={colors.text} />
           </TouchableOpacity>
         </View>
@@ -61,7 +61,7 @@ const Profile = () => {
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{currentUser.username}</Text>
-        <TouchableOpacity style={styles.headerIcon} onPress={handleOpenSettingsModalV2}>
+        <TouchableOpacity style={styles.headerIcon} onPress={handleOpenSettingsModal}>
           <Ionicons name="settings-outline" size={24} color={colors.text} />
         </TouchableOpacity>
       </View>
@@ -129,7 +129,7 @@ const Profile = () => {
       {/* EDIT PROFILE MODAL */}
       <EditedProfileModal ref={editProfileModal} />
       {/* SETTINGS MODAL */}
-      <SettingsModalV2 ref={settingsModalV2} />
+      <SettingsModal ref={settingsModal} />
     </View>
   )
 }
