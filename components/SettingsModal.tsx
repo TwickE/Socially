@@ -79,7 +79,7 @@ const SettingsModal = ({ ref }: { ref: any }) => {
         {/* LOGOUT BUTTON */}
         <TouchableOpacity onPress={() => signOut()} style={styles.settingsModalLogoutButton}>
           <Ionicons name="log-out-outline" size={24} color="white" />
-          <Text style={{ color: "white" }}>{t("profile.settingsModal.logout")}</Text>
+          <Text style={{ color: "white", fontWeight: 600, fontSize: 16 }}>{t("profile.settingsModal.logout")}</Text>
         </TouchableOpacity>
       </BottomSheetScrollView>
     </BottomSheetModal>

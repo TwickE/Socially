@@ -79,5 +79,10 @@
       "newLike": "Gostou da tua publicação",
       "newComment": "Comentou: {{comment}}"
     }
+  },
+  "auth": {
+    "tagline": "Conecta-te com o mundo",
+    "googleButton": "Continuar com o Google",
+    "termsAndPrivacy": "Ao continuar, concorda com os nossos termos e políticas de privacidade."
   }
 }

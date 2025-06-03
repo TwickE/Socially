@@ -79,5 +79,10 @@
       "newLike": "Liked your post",
       "newComment": "Commented: {{comment}}"
     }
+  },
+  "auth": {
+    "tagline": "Connect with the world",
+    "googleButton": "Continue with Google",
+    "termsAndPrivacy": "By continuing, you agree to our Terms and Privacy Policy"
   }
 }

@@ -4,6 +4,7 @@ import { useSSO } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 const Login = () => {
@@ -11,6 +12,7 @@ const Login = () => {
   const { startSSOFlow } = useSSO();
   const router = useRouter();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const { t } = useTranslation("global");
 
   const handleGoogleSignIn = async () => {
     try {
@@ -36,7 +38,7 @@ const Login = () => {
           />
         </View>
         <Text style={styles.appName}>Socially</Text>
-        <Text style={styles.tagline}>Connect with the world</Text>
+        <Text style={styles.tagline}>{t("auth.tagline")}</Text>
       </View>
       <View style={styles.illustrationContainer}>
         <Image
@@ -54,11 +56,9 @@ const Login = () => {
           <View style={styles.googleIconContainer}>
             <Ionicons name='logo-google' size={24} color={colors.surface} />
           </View>
-          <Text style={styles.googleButtonText}>Continue with Google</Text>
+          <Text style={styles.googleButtonText}>{t("auth.googleButton")}</Text>
         </TouchableOpacity>
-        <Text style={styles.termsText}>
-          By continuing, you agree to our Terms and Privacy Policy
-        </Text>
+        <Text style={styles.termsText}>{t("auth.termsAndPrivacy")}</Text>
       </View>
     </View>
   )
