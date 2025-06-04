@@ -83,14 +83,24 @@ const Profile = () => {
                 <Text style={styles.statNumber}>{currentUser.posts}</Text>
                 <Text style={styles.statLabel}>{t("profile.posts")}</Text>
               </View>
-              <View style={styles.statItem}>
-                <Text style={styles.statNumber}>{currentUser.followers}</Text>
-                <Text style={styles.statLabel}>{t("profile.followers")}</Text>
-              </View>
-              <View style={styles.statItem}>
-                <Text style={styles.statNumber}>{currentUser.following}</Text>
-                <Text style={styles.statLabel}>{t("profile.following")}</Text>
-              </View>
+              <Link
+                href={{ pathname: "/follows", params: { id: currentUser._id, type: 'followers' as 'followers' | 'following' } }}
+                asChild
+              >
+                <TouchableOpacity style={styles.statItem}>
+                  <Text style={styles.statNumber}>{currentUser.followers}</Text>
+                  <Text style={styles.statLabel}>{t("profile.followers")}</Text>
+                </TouchableOpacity>
+              </Link>
+              <Link
+                href={{ pathname: "/follows", params: { id: currentUser._id, type: 'following' as 'followers' | 'following' } }}
+                asChild
+              >
+                <TouchableOpacity style={styles.statItem}>
+                  <Text style={styles.statNumber}>{currentUser.following}</Text>
+                  <Text style={styles.statLabel}>{t("profile.following")}</Text>
+                </TouchableOpacity>
+              </Link>
             </View>
           </View>
           {/* NAME AND BIO */}

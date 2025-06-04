@@ -84,5 +84,11 @@
     "tagline": "Conecta-te com o mundo",
     "googleButton": "Continuar com o Google",
     "termsAndPrivacy": "Ao continuar, concorda com os nossos termos e políticas de privacidade."
+  },
+  "follows": {
+    "titleFollowing": "A Seguir",
+    "titleFollow": "Seguidores",
+    "noFollowing": "Não segues ninguém ainda",
+    "noFollowers": "Ainda não tens seguidores"
   }
 }

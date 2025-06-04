@@ -185,3 +185,69 @@ export const searchUsersByUsername = query({
     return users;
   },
 });
+
+export const getUserFollowers = query({
+  args: { id: v.id("users") },
+  handler: async (ctx, args) => {
+    const followers = await ctx.db
+      .query("follows")
+      .withIndex("by_following", (q) => q.eq("followingId", args.id))
+      .collect();
+
+    const followersWithInfo = await Promise.all(
+      followers.map(async (follow) => {
+        const user = await ctx.db.get(follow.followerId);
+
+        const bothFollow = await ctx.db
+          .query("follows")
+          .withIndex("by_both", (q) => q.eq("followerId", args.id).eq("followingId", user!._id))
+          .first();
+
+        return {
+          ...follow,
+          user: {
+            id: user!._id,
+            username: user!.username,
+            fullname: user!.fullname,
+            image: user!.image,
+            bothFollow: !!bothFollow,
+          }
+        };
+      })
+    );
+    return followersWithInfo;
+  }
+});
+
+export const getUserFollowing = query({
+  args: { id: v.id("users") },
+  handler: async (ctx, args) => {
+    const following = await ctx.db
+      .query("follows")
+      .withIndex("by_follower", (q) => q.eq("followerId", args.id))
+      .collect();
+
+    const followingWithInfo = await Promise.all(
+      following.map(async (follow) => {
+        const user = await ctx.db.get(follow.followingId);
+
+        const bothFollow = await ctx.db
+          .query("follows")
+          .withIndex("by_both", (q) => q.eq("followerId", user!._id).eq("followingId", args.id))
+          .first();
+
+        return {
+          ...follow,
+          user: {
+            id: user!._id,
+            username: user!.username,
+            fullname: user!.fullname,
+            image: user!.image,
+            bothFollow: !!bothFollow,
+          }
+        };
+      })
+    );
+    return followingWithInfo;
+  }
+});
