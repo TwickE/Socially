@@ -3,54 +3,68 @@ import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { useAppThemeColors } from '@/hooks/useAppThemeColors';
 import { createStyles } from '@/styles/follows.styles';
+import { useAuth } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
-import { Link, useLocalSearchParams, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
-const Follows = () => {
+interface FollowsModalProps {
+  id: Id<"users">;
+  type: 'followers' | 'following';
+  visible: boolean
+  onClose: () => void;
+}
+
+const FollowsModal = ({ id, type, visible, onClose }: FollowsModalProps) => {
   const { t } = useTranslation("global");
   const colors = useAppThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
-
-  const router = useRouter();
-  const { id, type } = useLocalSearchParams();
 
   const query = type === 'followers' ? api.users.getUserFollowers : api.users.getUserFollowing;
   const queryData = useQuery(query, { id: id as Id<"users"> });
 
   return (
-    <View style={styles.container}>
-      {/* HEADER */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>
-          {type === "followers" ? t("follows.titleFollow") : t("follows.titleFollowing")}
-        </Text>
-        <View style={{ width: 24 }} />
+
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent={true}
+      onRequestClose={onClose}
+    >
+      <View style={styles.container}>
+        {/* HEADER */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={onClose}>
+            <Ionicons name="close" size={24} color={colors.text} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>
+            {type === "followers" ? t("follows.titleFollow") : t("follows.titleFollowing")}
+          </Text>
+          <View style={{ width: 24 }} />
+        </View>
+        {/* LOADER OR LIST OF USERS */}
+        {queryData === undefined ? (
+          <Loader />
+        ) : queryData.length > 0 ? (
+          <FlatList
+            data={queryData}
+            keyExtractor={(item) => item._id.toString()}
+            renderItem={({ item }) => <UserListItem user={item.user} onCloseModal={onClose} />}
+          />
+        ) : (
+          <NoFollows type={type[0]} />
+        )}
       </View>
-      {/* LOADER OR LIST OF USERS */}
-      {queryData === undefined ? (
-        <Loader />
-      ) : queryData.length > 0 ? (
-        <FlatList
-          data={queryData}
-          keyExtractor={(item) => item._id.toString()}
-          renderItem={({ item }) => <UserListItem user={item.user} />}
-        />
-      ) : (
-        <NoFollows type={type[0]} />
-      )}
-    </View>
+    </Modal>
+
   )
 }
 
-export default Follows
+export default FollowsModal
 
 interface UserListItemProps {
   id: Id<"users">;
@@ -60,17 +74,24 @@ interface UserListItemProps {
   bothFollow: boolean;
 }
 
-function UserListItem({ user }: { user: UserListItemProps }) {
+function UserListItem({ user, onCloseModal }: { user: UserListItemProps, onCloseModal: () => void }) {
   const { t } = useTranslation("global");
   const colors = useAppThemeColors();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   const toggleFollow = useMutation(api.users.toggleFollow);
 
+  const { userId } = useAuth();
+  const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
+  const isLoggedInUser = currentUser && currentUser._id === user.id;
+
   return (
-    <Link href={`/user/${user.id}`} asChild>
-      <View style={styles.itemContainer}>
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+    <View style={styles.itemContainer}>
+      <Link  href={currentUser?._id === user.id ? '/(tabs)/profile' : `/user/${user.id}`} asChild>
+        <TouchableOpacity
+          onPress={onCloseModal}
+          style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
+        >
           <Image
             source={{ uri: user.image }}
             style={styles.avatar}
@@ -82,6 +103,8 @@ function UserListItem({ user }: { user: UserListItemProps }) {
             <Text style={styles.fullname}>{user.fullname}</Text>
           </View>
         </TouchableOpacity>
+      </Link>
+      {!isLoggedInUser && (
         <Pressable
           onPress={() => toggleFollow({ followingId: user.id as Id<"users"> })}
           style={user.bothFollow ? styles.followingButton : styles.followButton}
@@ -90,8 +113,8 @@ function UserListItem({ user }: { user: UserListItemProps }) {
             {t("profile.followButton", { context: String(user.bothFollow) })}
           </Text>
         </Pressable>
-      </View>
-    </Link >
+      )}
+    </View>
   )
 }
 

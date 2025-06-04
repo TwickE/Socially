@@ -1,3 +1,4 @@
+import FollowsModal from '@/components/FollowModal';
 import Loader from '@/components/Loader';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
@@ -7,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
@@ -31,6 +32,11 @@ const UserProfileScreen = () => {
       router.replace('/(tabs)');
     }
   }
+
+  const [followsModal, setFollowsModal] = useState({
+    visible: false,
+    type: 'followers' as 'followers' | 'following',
+  });
 
   if (profile === undefined || posts === undefined || isFollowing === undefined) {
     return (
@@ -76,14 +82,20 @@ const UserProfileScreen = () => {
                 <Text style={styles.statNumber}>{profile.posts}</Text>
                 <Text style={styles.statLabel}>{t("profile.posts")}</Text>
               </View>
-              <View style={styles.statItem}>
+              <TouchableOpacity
+                onPress={() => setFollowsModal({ visible: true, type: "followers" })}
+                style={styles.statItem}
+              >
                 <Text style={styles.statNumber}>{profile.followers}</Text>
                 <Text style={styles.statLabel}>{t("profile.followers")}</Text>
-              </View>
-              <View style={styles.statItem}>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setFollowsModal({ visible: true, type: "following" })}
+                style={styles.statItem}
+              >
                 <Text style={styles.statNumber}>{profile.following}</Text>
                 <Text style={styles.statLabel}>{t("profile.following")}</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           {/* NAME AND BIO */}
@@ -103,7 +115,7 @@ const UserProfileScreen = () => {
         <View style={styles.postsGrid}>
           {posts.length === 0 ? (
             <View style={styles.noPostsContainer}>
-              <Ionicons name="images-outline" size={48} color={colors.grey} />
+              <Ionicons name="images-outline" size={48} color={colors.primary} />
               <Text style={styles.noPostsText}>{t("home.noPosts")}</Text>
             </View>
           ) : (
@@ -129,6 +141,13 @@ const UserProfileScreen = () => {
           )}
         </View>
       </ScrollView>
+      {/* FOLLOWS MODAL */}
+      <FollowsModal
+        id={profile._id}
+        type={followsModal.type}
+        visible={followsModal.visible}
+        onClose={() => setFollowsModal({ visible: false, type: 'followers' })}
+      />
     </View>
   )
 }

@@ -192,12 +192,11 @@ export const createStyles = (colors: AppThemeColors) => {
       alignItems: "center",
       justifyContent: "center",
       paddingVertical: 48,
-      gap: 12,
       flex: 1,
     },
     noPostsText: {
-      color: colors.grey,
-      fontSize: 16,
+      color: colors.text,
+      fontSize: 20,
     },
     centered: {
       flex: 1,

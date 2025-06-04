@@ -1,4 +1,5 @@
 import EditedProfileModal from '@/components/EditProfileModal';
+import FollowsModal from '@/components/FollowModal';
 import Loader from '@/components/Loader';
 import SettingsModal from '@/components/SettingsModal';
 import { api } from '@/convex/_generated/api';
@@ -10,7 +11,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
@@ -33,6 +34,11 @@ const Profile = () => {
   const handleOpenEditProfileModal = () => {
     editProfileModal.current?.present();
   }
+
+  const [followsModal, setFollowsModal] = useState({
+    visible: false,
+    type: 'followers' as 'followers' | 'following',
+  });
 
   if (!currentUser || posts === undefined) {
     return (
@@ -83,24 +89,21 @@ const Profile = () => {
                 <Text style={styles.statNumber}>{currentUser.posts}</Text>
                 <Text style={styles.statLabel}>{t("profile.posts")}</Text>
               </View>
-              <Link
-                href={{ pathname: "/follows", params: { id: currentUser._id, type: 'followers' as 'followers' | 'following' } }}
-                asChild
+              <TouchableOpacity
+                onPress={() => setFollowsModal({ visible: true, type: "followers" })}
+                style={styles.statItem}
               >
-                <TouchableOpacity style={styles.statItem}>
-                  <Text style={styles.statNumber}>{currentUser.followers}</Text>
-                  <Text style={styles.statLabel}>{t("profile.followers")}</Text>
-                </TouchableOpacity>
-              </Link>
-              <Link
-                href={{ pathname: "/follows", params: { id: currentUser._id, type: 'following' as 'followers' | 'following' } }}
-                asChild
+                <Text style={styles.statNumber}>{currentUser.followers}</Text>
+                <Text style={styles.statLabel}>{t("profile.followers")}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setFollowsModal({ visible: true, type: "following" })}
+                style={styles.statItem}
               >
-                <TouchableOpacity style={styles.statItem}>
-                  <Text style={styles.statNumber}>{currentUser.following}</Text>
-                  <Text style={styles.statLabel}>{t("profile.following")}</Text>
-                </TouchableOpacity>
-              </Link>
+                <Text style={styles.statNumber}>{currentUser.following}</Text>
+                <Text style={styles.statLabel}>{t("profile.following")}</Text>
+              </TouchableOpacity>
+              {/* </Link> */}
             </View>
           </View>
           {/* NAME AND BIO */}
@@ -140,6 +143,13 @@ const Profile = () => {
       <EditedProfileModal ref={editProfileModal} />
       {/* SETTINGS MODAL */}
       <SettingsModal ref={settingsModal} />
+      {/* FOLLOWS MODAL */}
+      <FollowsModal
+        id={currentUser._id}
+        type={followsModal.type}
+        visible={followsModal.visible}
+        onClose={() => setFollowsModal({ visible: false, type: 'followers' })}
+      />
     </View>
   )
 }
