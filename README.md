@@ -25,11 +25,11 @@ Socially is an App built with React Native and Expo for the UI, Convex for the d
 - **Modern UI/UX:** A sleek and intuitive user interface built with React Native.
 - **Cross-Platform:** Runs on both iOS and Android thanks to React Native and Expo.
 
-## Login Screen
-![Socially Login Screen](https://github.com/user-attachments/assets/97393d23-7e39-4f77-a1c4-d5bba4e244a3)
-
 ## Home Screen
 ![Socially Home Screen](https://github.com/user-attachments/assets/ff21190d-f366-4f7f-8093-09eb8f8fd62b)
+
+## Login Screen
+![Socially Login Screen](https://github.com/user-attachments/assets/97393d23-7e39-4f77-a1c4-d5bba4e244a3)
 
 ## Comments Screen
 ![Socially Comments Screen](https://github.com/user-attachments/assets/6c2aeac2-5df3-4ff4-89b6-2afcaf4483fe)
