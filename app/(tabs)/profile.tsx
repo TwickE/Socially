@@ -13,7 +13,7 @@ import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 const Profile = () => {
   const { userId } = useAuth();
@@ -71,60 +71,61 @@ const Profile = () => {
           <Ionicons name="settings-outline" size={24} color={colors.text} />
         </TouchableOpacity>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.profileInfo}>
-          {/* AVATAR */}
-          <View style={styles.avatarAndStats}>
-            <View style={styles.avatarContainer}>
-              <Image
-                source={currentUser.image}
-                style={styles.avatar}
-                contentFit="cover"
-                transition={200}
-              />
-            </View>
-            {/* STATS */}
-            <View style={styles.statsContainer}>
-              <View style={styles.statItem}>
-                <Text style={styles.statNumber}>{currentUser.posts}</Text>
-                <Text style={styles.statLabel}>{t("profile.posts")}</Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => setFollowsModal({ visible: true, type: "followers" })}
-                style={styles.statItem}
-              >
-                <Text style={styles.statNumber}>{currentUser.followers}</Text>
-                <Text style={styles.statLabel}>{t("profile.followers")}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setFollowsModal({ visible: true, type: "following" })}
-                style={styles.statItem}
-              >
-                <Text style={styles.statNumber}>{currentUser.following}</Text>
-                <Text style={styles.statLabel}>{t("profile.following")}</Text>
-              </TouchableOpacity>
-              {/* </Link> */}
-            </View>
+      <View style={styles.profileInfo}>
+        {/* AVATAR */}
+        <View style={styles.avatarAndStats}>
+          <View style={styles.avatarContainer}>
+            <Image
+              source={currentUser.image}
+              style={styles.avatar}
+              contentFit="cover"
+              transition={200}
+            />
           </View>
-          {/* NAME AND BIO */}
-          <Text style={styles.name}>{currentUser.fullname}</Text>
-          {currentUser.bio && <Text style={styles.bio}>{currentUser.bio}</Text>}
-          {/* EDIT PROFILE BUTTON */}
-          <View style={styles.actionButtons}>
-            <TouchableOpacity style={styles.editButton} onPress={handleOpenEditProfileModal}>
-              <Text style={styles.editButtonText}>{t("profile.editProfile")}</Text>
+          {/* STATS */}
+          <View style={styles.statsContainer}>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>{currentUser.posts}</Text>
+              <Text style={styles.statLabel}>{t("profile.posts")}</Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => setFollowsModal({ visible: true, type: "followers" })}
+              style={styles.statItem}
+            >
+              <Text style={styles.statNumber}>{currentUser.followers}</Text>
+              <Text style={styles.statLabel}>{t("profile.followers")}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.shareButton}>
-              <Ionicons name="share-outline" size={20} color={colors.text} />
+            <TouchableOpacity
+              onPress={() => setFollowsModal({ visible: true, type: "following" })}
+              style={styles.statItem}
+            >
+              <Text style={styles.statNumber}>{currentUser.following}</Text>
+              <Text style={styles.statLabel}>{t("profile.following")}</Text>
             </TouchableOpacity>
+            {/* </Link> */}
           </View>
         </View>
-        {/* POSTS */}
-        {posts.length === 0 && <NoPostsFound />}
+        {/* NAME AND BIO */}
+        <Text style={styles.name}>{currentUser.fullname}</Text>
+        {currentUser.bio && <Text style={styles.bio}>{currentUser.bio}</Text>}
+        {/* EDIT PROFILE BUTTON */}
+        <View style={styles.actionButtons}>
+          <TouchableOpacity style={styles.editButton} onPress={handleOpenEditProfileModal}>
+            <Text style={styles.editButtonText}>{t("profile.editProfile")}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.shareButton}>
+            <Ionicons name="share-outline" size={20} color={colors.text} />
+          </TouchableOpacity>
+        </View>
+      </View>
+      {/* POSTS */}
+      {posts.length === 0 ? (
+        <NoPostsFound />
+      ) : (
         <FlatList
           data={posts}
           numColumns={3}
-          scrollEnabled={false}
+          scrollEnabled={true}
           renderItem={({ item }) => (
             <Link href={{ pathname: "/post/[id]", params: { id: item._id.toString() } }} asChild>
               <TouchableOpacity style={styles.gridItem}>
@@ -133,12 +134,13 @@ const Profile = () => {
                   style={styles.gridImage}
                   contentFit="cover"
                   transition={200}
+                  cachePolicy='memory-disk'
                 />
               </TouchableOpacity>
             </Link>
           )}
         />
-      </ScrollView>
+      )}
       {/* EDIT PROFILE MODAL */}
       <EditedProfileModal ref={editProfileModal} />
       {/* SETTINGS MODAL */}
@@ -162,7 +164,7 @@ function NoPostsFound() {
 
   return (
     <View style={{
-      height: '100%',
+      flex: 1,
       backgroundColor: colors.background,
       justifyContent: 'center',
       alignItems: 'center',

@@ -10,7 +10,7 @@ import { Image } from 'expo-image';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 const UserProfileScreen = () => {
   const { id } = useLocalSearchParams();
@@ -65,82 +65,74 @@ const UserProfileScreen = () => {
         <Text style={styles.headerTitle}>{profile.username}</Text>
         <View style={{ width: 24 }} />
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.profileInfo}>
-          {/* AVATAR */}
-          <View style={styles.avatarAndStats}>
-            <Image
-              source={profile.image}
-              style={styles.avatar}
-              contentFit="cover"
-              transition={200}
-              cachePolicy='memory-disk'
-            />
-            {/* STATS */}
-            <View style={styles.statsContainer}>
-              <View style={styles.statItem}>
-                <Text style={styles.statNumber}>{profile.posts}</Text>
-                <Text style={styles.statLabel}>{t("profile.posts")}</Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => setFollowsModal({ visible: true, type: "followers" })}
-                style={styles.statItem}
-              >
-                <Text style={styles.statNumber}>{profile.followers}</Text>
-                <Text style={styles.statLabel}>{t("profile.followers")}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setFollowsModal({ visible: true, type: "following" })}
-                style={styles.statItem}
-              >
-                <Text style={styles.statNumber}>{profile.following}</Text>
-                <Text style={styles.statLabel}>{t("profile.following")}</Text>
-              </TouchableOpacity>
+      <View style={styles.profileInfo}>
+        {/* AVATAR */}
+        <View style={styles.avatarAndStats}>
+          <Image
+            source={profile.image}
+            style={styles.avatar}
+            contentFit="cover"
+            transition={200}
+            cachePolicy='memory-disk'
+          />
+          {/* STATS */}
+          <View style={styles.statsContainer}>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>{profile.posts}</Text>
+              <Text style={styles.statLabel}>{t("profile.posts")}</Text>
             </View>
+            <TouchableOpacity
+              onPress={() => setFollowsModal({ visible: true, type: "followers" })}
+              style={styles.statItem}
+            >
+              <Text style={styles.statNumber}>{profile.followers}</Text>
+              <Text style={styles.statLabel}>{t("profile.followers")}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setFollowsModal({ visible: true, type: "following" })}
+              style={styles.statItem}
+            >
+              <Text style={styles.statNumber}>{profile.following}</Text>
+              <Text style={styles.statLabel}>{t("profile.following")}</Text>
+            </TouchableOpacity>
           </View>
-          {/* NAME AND BIO */}
-          <Text style={styles.name}>{profile.fullname}</Text>
-          {profile.bio && <Text style={styles.bio}>{profile.bio}</Text>}
-          {/* FOLLOW BUTTON */}
-          <Pressable
-            style={[styles.followButton, isFollowing && styles.followingButton]}
-            onPress={() => toggleFollow({ followingId: id as Id<"users"> })}
-          >
-            <Text style={[styles.followButtonText, isFollowing && styles.followingButtonText]}>
-              {t("profile.followButton", { context: String(isFollowing) })}
-            </Text>
-          </Pressable>
         </View>
-        {/* POSTS */}
-        <View style={styles.postsGrid}>
-          {posts.length === 0 ? (
-            <View style={styles.noPostsContainer}>
-              <Ionicons name="images-outline" size={48} color={colors.primary} />
-              <Text style={styles.noPostsText}>{t("home.noPosts")}</Text>
-            </View>
-          ) : (
-            <FlatList
-              data={posts}
-              keyExtractor={(post) => post._id.toString()}
-              numColumns={3}
-              scrollEnabled={false}
-              renderItem={({ item }) => (
-                <Link href={{ pathname: "/post/[id]", params: { id: item._id.toString() } }} asChild>
-                  <TouchableOpacity style={styles.gridItem}>
-                    <Image
-                      source={item.imageUrl}
-                      style={styles.gridImage}
-                      contentFit="cover"
-                      transition={200}
-                      cachePolicy='memory-disk'
-                    />
-                  </TouchableOpacity>
-                </Link>
-              )}
-            />
+        {/* NAME AND BIO */}
+        <Text style={styles.name}>{profile.fullname}</Text>
+        {profile.bio && <Text style={styles.bio}>{profile.bio}</Text>}
+        {/* FOLLOW BUTTON */}
+        <Pressable
+          style={[styles.followButton, isFollowing && styles.followingButton]}
+          onPress={() => toggleFollow({ followingId: id as Id<"users"> })}
+        >
+          <Text style={[styles.followButtonText, isFollowing && styles.followingButtonText]}>
+            {t("profile.followButton", { context: String(isFollowing) })}
+          </Text>
+        </Pressable>
+      </View>
+      {/* POSTS */}
+      {posts.length === 0 ? (
+        <NoPostsFound />
+      ) : (
+        <FlatList
+          data={posts}
+          numColumns={3}
+          scrollEnabled={true}
+          renderItem={({ item }) => (
+            <Link href={{ pathname: "/post/[id]", params: { id: item._id.toString() } }} asChild>
+              <TouchableOpacity style={styles.gridItem}>
+                <Image
+                  source={item.imageUrl}
+                  style={styles.gridImage}
+                  contentFit="cover"
+                  transition={200}
+                  cachePolicy='memory-disk'
+                />
+              </TouchableOpacity>
+            </Link>
           )}
-        </View>
-      </ScrollView>
+        />
+      )}
       {/* FOLLOWS MODAL */}
       <FollowsModal
         id={profile._id}
@@ -153,3 +145,20 @@ const UserProfileScreen = () => {
 }
 
 export default UserProfileScreen
+
+function NoPostsFound() {
+  const { t } = useTranslation("global");
+  const colors = useAppThemeColors();
+
+  return (
+    <View style={{
+      flex: 1,
+      backgroundColor: colors.background,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}>
+      <Ionicons name="image-outline" size={48} color={colors.primary} />
+      <Text style={{ fontSize: 20, color: colors.text }}>{t("home.noPosts")}</Text>
+    </View>
+  )
+}

@@ -203,12 +203,6 @@ export const createStyles = (colors: AppThemeColors) => {
       justifyContent: "center",
       alignItems: "center",
     },
-    postsGrid: {
-      flex: 1,
-      flexDirection: "row",
-      flexWrap: "wrap",
-      justifyContent: "space-between",
-    },
     headerTitle: {
       fontSize: 18,
       fontWeight: "600",
