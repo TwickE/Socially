@@ -56,7 +56,7 @@ const FollowsModal = ({ id, type, visible, onClose }: FollowsModalProps) => {
             renderItem={({ item }) => <UserListItem user={item.user} onCloseModal={onClose} />}
           />
         ) : (
-          <NoFollows type={type[0]} />
+          <NoFollows type={type} />
         )}
       </View>
     </Modal>
