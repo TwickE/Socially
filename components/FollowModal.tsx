@@ -71,7 +71,6 @@ interface UserListItemProps {
   username: string;
   fullname: string;
   image: string;
-  bothFollow: boolean;
 }
 
 function UserListItem({ user, onCloseModal }: { user: UserListItemProps, onCloseModal: () => void }) {
@@ -84,6 +83,7 @@ function UserListItem({ user, onCloseModal }: { user: UserListItemProps, onClose
   const { userId } = useAuth();
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
   const isLoggedInUser = currentUser && currentUser._id === user.id;
+  const isFollowing = useQuery(api.users.isFollowing, { followingId: user.id as Id<"users"> });
 
   return (
     <View style={styles.itemContainer}>
@@ -107,10 +107,10 @@ function UserListItem({ user, onCloseModal }: { user: UserListItemProps, onClose
       {!isLoggedInUser && (
         <Pressable
           onPress={() => toggleFollow({ followingId: user.id as Id<"users"> })}
-          style={user.bothFollow ? styles.followingButton : styles.followButton}
+          style={isFollowing ? styles.followingButton : styles.followButton}
         >
-          <Text style={{ fontWeight: '600', color: user.bothFollow ? colors.text : "white" }}>
-            {t("profile.followButton", { context: String(user.bothFollow) })}
+          <Text style={{ fontWeight: '600', color: isFollowing ? colors.text : "white" }}>
+            {t("profile.followButton", { context: String(isFollowing) })}
           </Text>
         </Pressable>
       )}

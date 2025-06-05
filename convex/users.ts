@@ -198,11 +198,6 @@ export const getUserFollowers = query({
       followers.map(async (follow) => {
         const user = await ctx.db.get(follow.followerId);
 
-        const bothFollow = await ctx.db
-          .query("follows")
-          .withIndex("by_both", (q) => q.eq("followerId", args.id).eq("followingId", user!._id))
-          .first();
-
         return {
           ...follow,
           user: {
@@ -210,7 +205,6 @@ export const getUserFollowers = query({
             username: user!.username,
             fullname: user!.fullname,
             image: user!.image,
-            bothFollow: !!bothFollow,
           }
         };
       })
@@ -231,11 +225,6 @@ export const getUserFollowing = query({
       following.map(async (follow) => {
         const user = await ctx.db.get(follow.followingId);
 
-        const bothFollow = await ctx.db
-          .query("follows")
-          .withIndex("by_both", (q) => q.eq("followerId", user!._id).eq("followingId", args.id))
-          .first();
-
         return {
           ...follow,
           user: {
@@ -243,7 +232,6 @@ export const getUserFollowing = query({
             username: user!.username,
             fullname: user!.fullname,
             image: user!.image,
-            bothFollow: !!bothFollow,
           }
         };
       })
